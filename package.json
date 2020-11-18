@@ -19,9 +19,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
-  "types": "lib/index.d.ts",
+  "main": "src/index.js",
+  "types": "module.d.ts",
   "bin": {
     "solana-bpf-sdk-install": "bin/bpf-sdk-install.sh",
     "solana-localnet": "bin/localnet.sh"
@@ -29,22 +28,14 @@
   "testnetDefaultChannel": "edge",
   "files": [
     "/bin",
-    "/doc",
-    "/examples",
-    "/bpf-sdk",
-    "/lib",
     "/module.flow.js",
     "/src"
   ],
   "scripts": {
-    "bpf-sdk:install": "npm run clean:fixtures; bin/bpf-sdk-install.sh .",
-    "bpf-sdk:remove-symlinks": "find bpf-sdk -type l -print -exec cp {} {}.tmp \\; -exec mv {}.tmp {} \\;",
-    "build": "cross-env NODE_ENV=production rollup -c",
     "build:fixtures": "./test/fixtures/noop-c/build.sh; ./test/fixtures/noop-rust/build.sh",
     "clean:fixtures": "examples/bpf-rust-noop/do.sh clean; make -C examples/bpf-c-noop clean ",
     "clean": "rimraf ./coverage ./lib",
     "codecov": "set -ex; npm run test:cover; cat ./coverage/lcov.info | codecov",
-    "dev": "cross-env NODE_ENV=development rollup -c",
     "doc": "set -ex; esdoc; node -p '\"\\nDocumentation coverage: \" + require(\"./doc/coverage.json\").coverage'",
     "defs": "set -ex; flow check-contents < module.flow.js; tsc module.d.ts",
     "doc:watch": "watch 'npm run doc' . --wait=1 --ignoreDirectoryPattern=/doc/",
@@ -60,7 +51,6 @@
     "localnet:up": "bin/localnet.sh up",
     "localnet:update": "bin/localnet.sh update",
     "ok": "run-s lint flow test doc defs",
-    "prepare": "run-s clean bpf-sdk:install bpf-sdk:remove-symlinks build",
     "pretty": "prettier --check '{,{examples,src,test}/**/}*.{j,t}s'",
     "pretty:fix": "prettier --write '{,{examples,src,test}/**/}*.{j,t}s'",
     "re": "semantic-release --repository-url git@github.com:solana-labs/solana-web3.js.git",
@@ -128,16 +118,6 @@
     "marked": "^1.1.0",
     "prettier": "^2.0.0",
     "rimraf": "3.0.2",
-    "rollup": "2.33.2",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-copy": "^3.3.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.2.1",
-    "rollup-plugin-node-resolve": "5.2.0",
-    "rollup-plugin-replace": "2.2.0",
-    "rollup-plugin-terser": "^7.0.0",
     "semantic-release": "^17.0.2",
     "typescript": "^4.0.2",
     "watch": "^1.0.2"
