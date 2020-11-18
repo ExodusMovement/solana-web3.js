@@ -20,10 +20,6 @@
     "access": "public"
   },
   "main": "lib/index.js",
-  "bin": {
-    "solana-bpf-sdk-install": "bin/bpf-sdk-install.sh",
-    "solana-localnet": "bin/localnet.sh"
-  },
   "testnetDefaultChannel": "edge",
   "files": [
     "/lib",
