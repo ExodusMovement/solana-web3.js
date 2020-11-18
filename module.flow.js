@@ -10,7 +10,6 @@
  *
  */
 
-import {Buffer} from 'buffer';
 import * as BufferLayout from 'buffer-layout';
 import {PublicKey} from './src/publickey';
 
