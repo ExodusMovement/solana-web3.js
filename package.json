@@ -1,5 +1,5 @@
 {
-  "name": "@solana/web3.js",
+  "name": "@exodus/solana-web3.js",
   "version": "0.0.0-development",
   "description": "Solana Javascript API",
   "keywords": [
