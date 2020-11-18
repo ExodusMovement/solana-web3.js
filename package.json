@@ -19,19 +19,18 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/index.js",
-  "types": "module.d.ts",
+  "main": "lib/index.js",
   "bin": {
     "solana-bpf-sdk-install": "bin/bpf-sdk-install.sh",
     "solana-localnet": "bin/localnet.sh"
   },
   "testnetDefaultChannel": "edge",
   "files": [
-    "/bin",
-    "/module.flow.js",
-    "/src"
+    "/lib",
+    "/module.flow.js"
   ],
   "scripts": {
+    "prepare": "babel src --out-dir lib",
     "build:fixtures": "./test/fixtures/noop-c/build.sh; ./test/fixtures/noop-rust/build.sh",
     "clean:fixtures": "examples/bpf-rust-noop/do.sh clean; make -C examples/bpf-c-noop clean ",
     "clean": "rimraf ./coverage ./lib",
@@ -76,6 +75,7 @@
     "ws": "^7.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "@babel/core": "^7.3.3",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/plugin-proposal-function-bind": "^7.2.0",
