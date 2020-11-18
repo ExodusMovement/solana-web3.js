@@ -21,10 +21,10 @@ import {url} from './url';
 use(chaiAsPromised);
 
 describe('StakeProgram', () => {
-  it('createAccountWithSeed', async () => {
+  it('createAccountWithSeed', () => {
     const fromPubkey = Keypair.generate().publicKey;
     const seed = 'test string';
-    const newAccountPubkey = await PublicKey.createWithSeed(
+    const newAccountPubkey = PublicKey.createWithSeed(
       fromPubkey,
       seed,
       StakeProgram.programId,
@@ -279,10 +279,10 @@ describe('StakeProgram', () => {
     expect(params).to.eql(StakeInstruction.decodeDeactivate(stakeInstruction));
   });
 
-  it('StakeInstructions', async () => {
+  it('StakeInstructions', () => {
     const from = Keypair.generate();
     const seed = 'test string';
-    const newAccountPubkey = await PublicKey.createWithSeed(
+    const newAccountPubkey = PublicKey.createWithSeed(
       from.publicKey,
       seed,
       StakeProgram.programId,
@@ -407,7 +407,7 @@ describe('StakeProgram', () => {
 
       // Create Stake account with seed
       const seed = 'test string';
-      const newAccountPubkey = await PublicKey.createWithSeed(
+      const newAccountPubkey = PublicKey.createWithSeed(
         payer.publicKey,
         seed,
         StakeProgram.programId,

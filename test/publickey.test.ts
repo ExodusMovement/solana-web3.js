@@ -106,9 +106,9 @@ describe('PublicKey', function () {
     expect(key1.equals(key2)).to.be.true;
   });
 
-  it('createWithSeed', async () => {
+  it('createWithSeed', () => {
     const defaultPublicKey = new PublicKey('11111111111111111111111111111111');
-    const derivedKey = await PublicKey.createWithSeed(
+    const derivedKey = PublicKey.createWithSeed(
       defaultPublicKey,
       'limber chicken: 4/45',
       defaultPublicKey,
@@ -121,7 +121,7 @@ describe('PublicKey', function () {
     ).to.be.true;
   });
 
-  it('createProgramAddress', async () => {
+  it('createProgramAddress', () => {
     const programId = new PublicKey(
       'BPFLoader1111111111111111111111111111111111',
     );
@@ -129,7 +129,7 @@ describe('PublicKey', function () {
       'SeedPubey1111111111111111111111111111111111',
     );
 
-    let programAddress = await PublicKey.createProgramAddress(
+    let programAddress = PublicKey.createProgramAddress(
       [Buffer.from('', 'utf8'), Buffer.from([1])],
       programId,
     );
@@ -139,7 +139,7 @@ describe('PublicKey', function () {
       ),
     ).to.be.true;
 
-    programAddress = await PublicKey.createProgramAddress(
+    programAddress = PublicKey.createProgramAddress(
       [Buffer.from('☉', 'utf8')],
       programId,
     );
@@ -149,7 +149,7 @@ describe('PublicKey', function () {
       ),
     ).to.be.true;
 
-    programAddress = await PublicKey.createProgramAddress(
+    programAddress = PublicKey.createProgramAddress(
       [Buffer.from('Talking', 'utf8'), Buffer.from('Squirrels', 'utf8')],
       programId,
     );
@@ -159,7 +159,7 @@ describe('PublicKey', function () {
       ),
     ).to.be.true;
 
-    programAddress = await PublicKey.createProgramAddress(
+    programAddress = PublicKey.createProgramAddress(
       [publicKey.toBuffer()],
       programId,
     );
@@ -169,13 +169,13 @@ describe('PublicKey', function () {
       ),
     ).to.be.true;
 
-    const programAddress2 = await PublicKey.createProgramAddress(
+    const programAddress2 = PublicKey.createProgramAddress(
       [Buffer.from('Talking', 'utf8')],
       programId,
     );
     expect(programAddress.equals(programAddress2)).to.eq(false);
 
-    await expect(
+    expect(
       PublicKey.createProgramAddress(
         [Buffer.alloc(MAX_SEED_LENGTH + 1)],
         programId,
@@ -193,7 +193,7 @@ describe('PublicKey', function () {
       let programId = new PublicKey(
         '4ckmDgGdxQoPDLUkDT3vHgSAkzA3QRdNq5ywwY4sUSJn',
       );
-      programAddress = await PublicKey.createProgramAddress(seeds, programId);
+      programAddress = PublicKey.createProgramAddress(seeds, programId);
       expect(
         programAddress.equals(
           new PublicKey('12rqwuEgBYiGhBrDJStCiqEtzQpTTiZbh7teNVLuYcFA'),
@@ -202,17 +202,17 @@ describe('PublicKey', function () {
     }
   });
 
-  it('findProgramAddress', async () => {
+  it('findProgramAddress', () => {
     const programId = new PublicKey(
       'BPFLoader1111111111111111111111111111111111',
     );
-    let [programAddress, nonce] = await PublicKey.findProgramAddress(
+    let [programAddress, nonce] = PublicKey.findProgramAddress(
       [Buffer.from('', 'utf8')],
       programId,
     );
     expect(
       programAddress.equals(
-        await PublicKey.createProgramAddress(
+        PublicKey.createProgramAddress(
           [Buffer.from('', 'utf8'), Buffer.from([nonce])],
           programId,
         ),

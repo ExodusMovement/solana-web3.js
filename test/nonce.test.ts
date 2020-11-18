@@ -111,7 +111,7 @@ describe('Nonce', () => {
   it('create and query nonce account with seed', async () => {
     const from = Keypair.generate();
     const seed = 'seed';
-    const noncePubkey = await PublicKey.createWithSeed(
+    const noncePubkey = PublicKey.createWithSeed(
       from.publicKey,
       seed,
       SystemProgram.programId,

@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 import nacl from 'tweetnacl';
-import {sha256} from '@ethersproject/sha2';
+import createHash from 'create-hash';
 
 import {Struct, SOLANA_SCHEMA} from './util/borsh-schema';
 import {toBuffer} from './util/to-buffer';
@@ -124,29 +124,27 @@ export class PublicKey extends Struct {
    * The program ID will also serve as the owner of the public key, giving
    * it permission to write data to the account.
    */
-  /* eslint-disable require-await */
-  static async createWithSeed(
+  static createWithSeed(
     fromPublicKey: PublicKey,
     seed: string,
     programId: PublicKey,
-  ): Promise<PublicKey> {
+  ): PublicKey {
     const buffer = Buffer.concat([
       fromPublicKey.toBuffer(),
       Buffer.from(seed),
       programId.toBuffer(),
     ]);
-    const hash = sha256(new Uint8Array(buffer)).slice(2);
-    return new PublicKey(Buffer.from(hash, 'hex'));
+    const hash = createHash('sha256').update(buffer).digest();
+    return new PublicKey(hash);
   }
 
   /**
    * Derive a program address from seeds and a program ID.
    */
-  /* eslint-disable require-await */
-  static async createProgramAddress(
+  static createProgramAddress(
     seeds: Array<Buffer | Uint8Array>,
     programId: PublicKey,
-  ): Promise<PublicKey> {
+  ): PublicKey {
     let buffer = Buffer.alloc(0);
     seeds.forEach(function (seed) {
       if (seed.length > MAX_SEED_LENGTH) {
@@ -159,7 +157,7 @@ export class PublicKey extends Struct {
       programId.toBuffer(),
       Buffer.from('ProgramDerivedAddress'),
     ]);
-    let hash = sha256(new Uint8Array(buffer)).slice(2);
+    let hash = createHash('sha256').update(buffer).digest('hex');
     let publicKeyBytes = new BN(hash, 16).toArray(undefined, 32);
     if (is_on_curve(publicKeyBytes)) {
       throw new Error(`Invalid seeds, address must fall off the curve`);
@@ -174,16 +172,16 @@ export class PublicKey extends Struct {
    * iterates a nonce until it finds one that when combined with the seeds
    * results in a valid program address.
    */
-  static async findProgramAddress(
+  static findProgramAddress(
     seeds: Array<Buffer | Uint8Array>,
     programId: PublicKey,
-  ): Promise<[PublicKey, number]> {
+  ): [PublicKey, number] {
     let nonce = 255;
     let address;
     while (nonce != 0) {
       try {
         const seedsWithNonce = seeds.concat(Buffer.from([nonce]));
-        address = await this.createProgramAddress(seedsWithNonce, programId);
+        address = this.createProgramAddress(seedsWithNonce, programId);
       } catch (err) {
         if (err instanceof TypeError) {
           throw err;

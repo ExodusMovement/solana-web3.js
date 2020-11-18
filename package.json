@@ -1,6 +1,6 @@
 {
-  "name": "@solana/web3.js",
-  "version": "0.0.0-development",
+  "name": "@exodus/solana-web3.js",
+  "version": "0.87.1-exodus4.1",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
@@ -11,10 +11,10 @@
   "homepage": "https://solana.com/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/solana-labs/solana-web3.js.git"
+    "url": "https://github.com/ExodusMovement/solana-web3.js.git"
   },
   "bugs": {
-    "url": "http://github.com/solana-labs/solana-web3.js.git/issues"
+    "url": "http://github.com/ExodusMovement/solana-web3.js.git/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -23,8 +23,8 @@
     "./lib/index.cjs.js": "./lib/index.browser.esm.js",
     "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
+  "main": "lib/index.browser.esm.js",
+  "module": "lib/index.browser.esm.js",
   "types": "lib/index.d.ts",
   "browserslist": [
     "defaults",
@@ -33,8 +33,7 @@
   ],
   "files": [
     "/lib",
-    "/module.flow.js",
-    "/src"
+    "/module.flow.js"
   ],
   "scripts": {
     "build": "npm run clean; cross-env NODE_ENV=production rollup -c; npm run type:gen; npm run flow:gen; npm run flow:check",
@@ -51,7 +50,7 @@
     "ok": "run-s lint test doc",
     "pretty": "prettier --check '{,{src,test}/**/}*.{j,t}s'",
     "pretty:fix": "prettier --write '{,{src,test}/**/}*.{j,t}s'",
-    "re": "semantic-release --repository-url git@github.com:solana-labs/solana-web3.js.git",
+    "re": "semantic-release --repository-url git@github.com:ExodusMovement/solana-web3.js.git",
     "test": "mocha -r ts-node/register './test/**/*.test.ts'",
     "test:cover": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov mocha -r ts-node/register './test/**/*.test.ts'",
     "test:live": "TEST_LIVE=1 npm run test",
@@ -65,8 +64,9 @@
     "borsh": "^0.4.0",
     "bs58": "^4.0.1",
     "buffer": "6.0.1",
+    "create-hash": "~1.1.3",
     "cross-fetch": "^3.1.4",
-    "jayson": "^3.4.4",
+    "@exodus/json-rpc": "^1.6.0",
     "js-sha3": "^0.8.0",
     "rpc-websockets": "^7.4.2",
     "secp256k1": "^4.0.2",

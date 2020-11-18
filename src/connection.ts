@@ -22,7 +22,8 @@ import {
 } from 'superstruct';
 import type {Struct} from 'superstruct';
 import {Client as RpcWebSocketClient} from 'rpc-websockets';
-import RpcClient from 'jayson/lib/client/browser';
+import RPC from '@exodus/json-rpc';
+import EventEmitter from 'events';
 import {IWSRequestParams} from 'rpc-websockets/dist/lib/client';
 
 import {AgentManager} from './agent-manager';
@@ -755,7 +756,7 @@ function createRpcClient(
   httpHeaders?: HttpHeaders,
   fetchMiddleware?: FetchMiddleware,
   disableRetryOnRateLimit?: boolean,
-): RpcClient {
+): RPC {
   let agentManager: AgentManager | undefined;
   if (!process.env.BROWSER) {
     agentManager = new AgentManager(useHttps);
@@ -782,7 +783,9 @@ function createRpcClient(
     };
   }
 
-  const clientBrowser = new RpcClient(async (request, callback) => {
+  const transport = new EventEmitter()
+  // @ts-ignore
+  transport.write = async(request: any) => {
     const agent = agentManager ? agentManager.requestStart() : undefined;
     const options = {
       method: 'POST',
@@ -826,51 +829,38 @@ function createRpcClient(
 
       const text = await res.text();
       if (res.ok) {
-        callback(null, text);
+        transport.emit('data', text);
       } else {
-        callback(new Error(`${res.status} ${res.statusText}: ${text}`));
+        throw new Error(`${res.status} ${res.statusText}: ${text}`);
       }
     } catch (err) {
-      if (err instanceof Error) callback(err);
+      throw err;
     } finally {
       agentManager && agentManager.requestEnd();
     }
-  }, {});
+  }
 
-  return clientBrowser;
+  const rpc = new RPC({ transport })
+  return rpc;
 }
 
-function createRpcRequest(client: RpcClient): RpcRequest {
-  return (method, args) => {
-    return new Promise((resolve, reject) => {
-      client.request(method, args, (err: any, response: any) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(response);
-      });
-    });
-  };
+function createRpcRequest(rpc: RPC): RpcRequest {
+  return (method, args) => rpc.callMethodWithRawResponse(method, args);
 }
 
-function createRpcBatchRequest(client: RpcClient): RpcBatchRequest {
+function createRpcBatchRequest(rpc: RPC): RpcBatchRequest {
   return (requests: RpcParams[]) => {
     return new Promise((resolve, reject) => {
       // Do nothing if requests is empty
       if (requests.length === 0) resolve([]);
 
       const batch = requests.map((params: RpcParams) => {
-        return client.request(params.methodName, params.args);
+        return rpc.callMethodWithRawResponse(params.methodName, params.args);
       });
 
-      client.request(batch, (err: any, response: any) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(response);
-      });
+      Promise.all(batch)
+      .then(response => resolve(response))
+      .catch(err => reject(err))
     });
   };
 }
@@ -2018,7 +2008,7 @@ export class Connection {
   /** @internal */ _confirmTransactionInitialTimeout?: number;
   /** @internal */ _rpcEndpoint: string;
   /** @internal */ _rpcWsEndpoint: string;
-  /** @internal */ _rpcClient: RpcClient;
+  /** @internal */ _rpcClient: RPC;
   /** @internal */ _rpcRequest: RpcRequest;
   /** @internal */ _rpcBatchRequest: RpcBatchRequest;
   /** @internal */ _rpcWebSocket: RpcWebSocketClient;
