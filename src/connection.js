@@ -4,7 +4,8 @@ import assert from 'assert';
 import bs58 from 'bs58';
 import {parse as urlParse, format as urlFormat} from 'url';
 import fetch from 'node-fetch';
-import jayson from 'jayson/lib/client/browser';
+import RPC from '@exodus/json-rpc';
+import EventEmitter from 'events';
 import {struct} from 'superstruct';
 import {Client as RpcWebSocketClient} from 'rpc-websockets';
 
@@ -117,12 +118,12 @@ function jsonRpcResult(resultDescription: any) {
   return struct.union([
     struct({
       jsonrpc: jsonRpcVersion,
-      id: 'string',
+      id: 'number',
       error: 'any',
     }),
     struct({
       jsonrpc: jsonRpcVersion,
-      id: 'string',
+      id: 'number',
       error: 'null?',
       result: resultDescription,
     }),
@@ -564,7 +565,8 @@ type PerfSample = {
 function createRpcRequest(url: string, useHttps: boolean): RpcRequest {
   const agentManager = new AgentManager(useHttps);
 
-  const server = jayson(async (request, callback) => {
+  const transport = new EventEmitter();
+  transport.write = async request => {
     const agent = agentManager.requestStart();
     const options = {
       method: 'POST',
@@ -597,28 +599,17 @@ function createRpcRequest(url: string, useHttps: boolean): RpcRequest {
 
       const text = await res.text();
       if (res.ok) {
-        callback(null, text);
+        transport.emit('data', text);
       } else {
-        callback(new Error(`${res.status} ${res.statusText}: ${text}`));
+        throw new Error(`${res.status} ${res.statusText}: ${text}`);
       }
-    } catch (err) {
-      callback(err);
     } finally {
       agentManager.requestEnd();
     }
-  });
-
-  return (method, args) => {
-    return new Promise((resolve, reject) => {
-      server.request(method, args, (err, response) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(response);
-      });
-    });
   };
+
+  const rpc = new RPC({transport});
+  return (method, args) => rpc.callMethodWithRawResponse(method, args);
 }
 
 /**
@@ -626,7 +617,7 @@ function createRpcRequest(url: string, useHttps: boolean): RpcRequest {
  */
 const GetInflationGovernorRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: GetInflationGovernorResult,
 });
@@ -636,7 +627,7 @@ const GetInflationGovernorRpcResult = struct({
  */
 const GetEpochInfoRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: GetEpochInfoResult,
 });
@@ -646,7 +637,7 @@ const GetEpochInfoRpcResult = struct({
  */
 const GetEpochScheduleRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: GetEpochScheduleResult,
 });
@@ -666,7 +657,7 @@ const GetBalanceAndContextRpcResult = jsonRpcResultAndContext('number?');
  */
 const GetBlockTimeRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: struct.union(['null', 'number', 'undefined']),
 });
@@ -676,7 +667,7 @@ const GetBlockTimeRpcResult = struct({
  */
 const SlotRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: 'number',
 });
@@ -842,7 +833,7 @@ const GetLargestAccountsRpcResult = jsonRpcResultAndContext(
  */
 const GetVersionRpcResult = struct({
   jsonrpc: struct.literal('2.0'),
-  id: 'string',
+  id: 'number',
   error: 'any?',
   result: Version,
 });
