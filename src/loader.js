@@ -1,6 +1,6 @@
 // @flow
 
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 
 import {Account} from './account';
 import {PublicKey} from './publickey';

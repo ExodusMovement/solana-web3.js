@@ -1,6 +1,6 @@
 // @flow
 
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 import secp256k1 from 'secp256k1';
 import createKeccakHash from 'keccak';
 import assert from 'assert';

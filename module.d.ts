@@ -1,5 +1,5 @@
 declare module '@solana/web3.js' {
-  import * as BufferLayout from 'buffer-layout';
+  import * as BufferLayout from '@exodus/buffer-layout';
 
   // === src/publickey.js ===
   export const MAX_SEED_LENGTH: number;

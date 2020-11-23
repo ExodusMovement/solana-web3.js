@@ -1,6 +1,6 @@
 // @flow
 
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 
 /**
  * Layout for a public key

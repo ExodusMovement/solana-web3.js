@@ -1,5 +1,5 @@
 // @flow
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 
 import type {Blockhash} from './blockhash';
 import * as Layout from './layout';

@@ -10,7 +10,7 @@
  *
  */
 
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 import {PublicKey} from './src/publickey';
 
 declare module '@solana/web3.js' {

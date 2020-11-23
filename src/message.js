@@ -1,7 +1,7 @@
 // @flow
 
 import bs58 from 'bs58';
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 
 import {PublicKey} from './publickey';
 import type {Blockhash} from './blockhash';

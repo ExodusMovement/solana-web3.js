@@ -1,6 +1,6 @@
 // @flow
 
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@exodus/buffer-layout';
 
 import * as Layout from './layout';
 
