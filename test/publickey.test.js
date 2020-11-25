@@ -210,9 +210,9 @@ test('equals (II)', () => {
   expect(key1.equals(key2)).toBe(true);
 });
 
-test('createWithSeed', async () => {
+test('createWithSeed', () => {
   const defaultPublicKey = new PublicKey('11111111111111111111111111111111');
-  const derivedKey = await PublicKey.createWithSeed(
+  const derivedKey = PublicKey.createWithSeed(
     defaultPublicKey,
     'limber chicken: 4/45',
     defaultPublicKey,
@@ -225,7 +225,7 @@ test('createWithSeed', async () => {
   ).toBe(true);
 });
 
-test('createProgramAddress', async () => {
+test('createProgramAddress', () => {
   const programId = new PublicKey(
     'BPFLoader1111111111111111111111111111111111',
   );
@@ -233,7 +233,7 @@ test('createProgramAddress', async () => {
     'SeedPubey1111111111111111111111111111111111',
   );
 
-  let programAddress = await PublicKey.createProgramAddress(
+  let programAddress = PublicKey.createProgramAddress(
     [Buffer.from('', 'utf8'), Buffer.from([1])],
     programId,
   );
@@ -243,7 +243,7 @@ test('createProgramAddress', async () => {
     ),
   ).toBe(true);
 
-  programAddress = await PublicKey.createProgramAddress(
+  programAddress = PublicKey.createProgramAddress(
     [Buffer.from('☉', 'utf8')],
     programId,
   );
@@ -253,7 +253,7 @@ test('createProgramAddress', async () => {
     ),
   ).toBe(true);
 
-  programAddress = await PublicKey.createProgramAddress(
+  programAddress = PublicKey.createProgramAddress(
     [Buffer.from('Talking', 'utf8'), Buffer.from('Squirrels', 'utf8')],
     programId,
   );
@@ -263,7 +263,7 @@ test('createProgramAddress', async () => {
     ),
   ).toBe(true);
 
-  programAddress = await PublicKey.createProgramAddress(
+  programAddress = PublicKey.createProgramAddress(
     [publicKey.toBuffer()],
     programId,
   );
@@ -273,18 +273,18 @@ test('createProgramAddress', async () => {
     ),
   ).toBe(true);
 
-  const programAddress2 = await PublicKey.createProgramAddress(
+  const programAddress2 = PublicKey.createProgramAddress(
     [Buffer.from('Talking', 'utf8')],
     programId,
   );
   expect(programAddress.equals(programAddress2)).toBe(false);
 
-  await expect(
+  expect(() =>
     PublicKey.createProgramAddress(
       [Buffer.alloc(MAX_SEED_LENGTH + 1)],
       programId,
     ),
-  ).rejects.toThrow('Max seed length exceeded');
+  ).toThrow('Max seed length exceeded');
 
   // https://github.com/solana-labs/solana/issues/11950
   {
@@ -295,7 +295,7 @@ test('createProgramAddress', async () => {
     let programId = new PublicKey(
       '4ckmDgGdxQoPDLUkDT3vHgSAkzA3QRdNq5ywwY4sUSJn',
     );
-    programAddress = await PublicKey.createProgramAddress(seeds, programId);
+    programAddress = PublicKey.createProgramAddress(seeds, programId);
     expect(
       programAddress.equals(
         new PublicKey('12rqwuEgBYiGhBrDJStCiqEtzQpTTiZbh7teNVLuYcFA'),
@@ -304,17 +304,17 @@ test('createProgramAddress', async () => {
   }
 });
 
-test('findProgramAddress', async () => {
+test('findProgramAddress', () => {
   const programId = new PublicKey(
     'BPFLoader1111111111111111111111111111111111',
   );
-  let [programAddress, nonce] = await PublicKey.findProgramAddress(
+  let [programAddress, nonce] = PublicKey.findProgramAddress(
     [Buffer.from('', 'utf8')],
     programId,
   );
   expect(
     programAddress.equals(
-      await PublicKey.createProgramAddress(
+      PublicKey.createProgramAddress(
         [Buffer.from('', 'utf8'), Buffer.from([nonce])],
         programId,
       ),

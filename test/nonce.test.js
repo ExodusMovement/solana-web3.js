@@ -160,7 +160,7 @@ test('create and query nonce account', async () => {
 test('create and query nonce account with seed', async () => {
   const from = new Account();
   const seed = 'seed';
-  const noncePubkey = await PublicKey.createWithSeed(
+  const noncePubkey = PublicKey.createWithSeed(
     from.publicKey,
     seed,
     SystemProgram.programId,
