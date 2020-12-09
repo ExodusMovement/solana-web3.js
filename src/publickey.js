@@ -3,7 +3,7 @@
 import BN from 'bn.js';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
-import crypto from 'crypto';
+import createHash from 'create-hash';
 
 //$FlowFixMe
 let naclLowLevel = nacl.lowlevel;
@@ -89,7 +89,7 @@ export class PublicKey {
       Buffer.from(seed),
       programId.toBuffer(),
     ]);
-    const hash = crypto.createHash('sha256').update(buffer).digest();
+    const hash = createHash('sha256').update(buffer).digest();
     return new PublicKey(hash);
   }
 
@@ -112,7 +112,7 @@ export class PublicKey {
       programId.toBuffer(),
       Buffer.from('ProgramDerivedAddress'),
     ]);
-    let hash = crypto.createHash('sha256').update(buffer).digest('hex');
+    let hash = createHash('sha256').update(buffer).digest('hex');
     let publicKeyBytes = new BN(hash, 16).toArray(null, 32);
     if (is_on_curve(publicKeyBytes)) {
       throw new Error(`Invalid seeds, address must fall off the curve`);
