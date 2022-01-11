@@ -840,6 +840,19 @@ function createRpcClient(
   return clientBrowser;
 }
 
+function createExternalProviderRpcRequest(
+  externalProvider: ExternalProvider,
+): RpcRequest {
+  return async (method, args) => {
+    const response = await externalProvider({
+      method,
+      params: args,
+    });
+
+    return response;
+  };
+}
+
 function createRpcRequest(client: RpcClient): RpcRequest {
   return (method, args) => {
     return new Promise((resolve, reject) => {
@@ -1992,6 +2005,11 @@ export type FetchMiddleware = (
   fetch: (modifiedUrl: string, modifiedOptions: any) => void,
 ) => void;
 
+export type ExternalProvider = (request: {
+  method: string;
+  params?: Array<any>;
+}) => Promise<void>;
+
 /**
  * Configuration for instantiating a Connection
  */
@@ -2008,6 +2026,8 @@ export type ConnectionConfig = {
   disableRetryOnRateLimit?: boolean;
   /** time to allow for the server to initially process a transaction (in milliseconds) */
   confirmTransactionInitialTimeout?: number;
+  /** External provider */
+  sendAsync?: ExternalProvider;
 };
 
 /**
@@ -2096,6 +2116,7 @@ export class Connection {
     let httpHeaders;
     let fetchMiddleware;
     let disableRetryOnRateLimit;
+    let externalProvider;
     if (commitmentOrConfig && typeof commitmentOrConfig === 'string') {
       this._commitment = commitmentOrConfig;
     } else if (commitmentOrConfig) {
@@ -2106,6 +2127,7 @@ export class Connection {
       httpHeaders = commitmentOrConfig.httpHeaders;
       fetchMiddleware = commitmentOrConfig.fetchMiddleware;
       disableRetryOnRateLimit = commitmentOrConfig.disableRetryOnRateLimit;
+      externalProvider = commitmentOrConfig.sendAsync;
     }
 
     this._rpcEndpoint = endpoint;
@@ -2118,7 +2140,9 @@ export class Connection {
       fetchMiddleware,
       disableRetryOnRateLimit,
     );
-    this._rpcRequest = createRpcRequest(this._rpcClient);
+    this._rpcRequest = externalProvider
+      ? createExternalProviderRpcRequest(externalProvider)
+      : createRpcRequest(this._rpcClient);
     this._rpcBatchRequest = createRpcBatchRequest(this._rpcClient);
 
     this._rpcWebSocket = new RpcWebSocketClient(this._rpcWsEndpoint, {
