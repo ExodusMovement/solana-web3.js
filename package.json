@@ -32,7 +32,9 @@
     "maintained node versions"
   ],
   "files": [
-    "/lib",
+    "/lib/index.browser.esm.js",
+    "/lib/index.browser.esm.js.map",
+    "/lib/index.d.ts",
     "/module.flow.js"
   ],
   "scripts": {
