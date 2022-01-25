@@ -81,12 +81,13 @@ function generateConfig(configType, format) {
           // Prevent dependencies from being bundled
           config.external = [
             /@babel\/runtime/,
+            '@exodus/json-rpc',
             '@solana/buffer-layout',
             'bn.js',
             'borsh',
             'bs58',
             'buffer',
-            'crypto-hash',
+            'create-hash',
             'http',
             'https',
             'jayson/lib/client/browser',
