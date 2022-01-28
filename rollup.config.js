@@ -17,9 +17,7 @@ function generateConfig(configType, format) {
     input: 'src/index.ts',
     plugins: [
       commonjs(),
-      nodePolyfills({
-        include: ['events']
-      }),
+      nodePolyfills(),
       nodeResolve({
         browser,
         dedupe: ['bn.js', 'buffer'],
