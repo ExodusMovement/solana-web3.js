@@ -92,7 +92,6 @@ function generateConfig(configType, format) {
             'create-hash',
             'http',
             'https',
-            'jayson/lib/client/browser',
             'js-sha3',
             'rpc-websockets',
             'secp256k1',
