@@ -89,7 +89,6 @@ function generateConfig(configType, format) {
             'borsh',
             'bs58',
             'buffer',
-            'create-hash',
             'http',
             'https',
             'js-sha3',
