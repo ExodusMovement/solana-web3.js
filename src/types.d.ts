@@ -1,17 +1,17 @@
 declare module '@exodus/json-rpc' {
-    interface IArgs {
-        transport: any
-    }
+  interface IArgs {
+    transport: any;
+  }
 
-    class RPC {
-      constructor(config: IArgs)
+  class RPC {
+    constructor(config: IArgs);
 
-      callMethodWithRawResponse(method: string, args: Array<any>): any
-    }
+    callMethodWithRawResponse(method: string, args: Array<any>): any;
+  }
 
-    export = RPC
+  export = RPC;
 }
 
 declare module 'create-hash' {
-   export default function (str: string): any;
+  export default function (str: string): any;
 }
