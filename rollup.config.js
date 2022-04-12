@@ -136,11 +136,11 @@ function generateConfig(configType, format) {
           format: 'cjs',
           sourcemap: true,
         },
-        {
+        /*{
           file: 'lib/index.esm.js',
           format: 'es',
           sourcemap: true,
-        },
+        },*/
       ];
       break;
     default:
@@ -152,6 +152,6 @@ function generateConfig(configType, format) {
 
 export default [
   generateConfig('node'),
-  generateConfig('browser', 'esm'),
-  generateConfig('browser', 'iife'),
+  // generateConfig('browser', 'esm'),
+  // generateConfig('browser', 'iife'),
 ];
