@@ -2073,7 +2073,10 @@ export class Connection {
     commitmentOrConfig?: Commitment | ConnectionConfig,
   ) {
     let url = new URL(endpoint);
-    const useHttps = url.protocol === 'https:';
+    if(!endpoint.startsWith('https://')){
+        throw new Error(`unsupported URL: ${endpoint}`);
+    };
+    const useHttps = true; //url.protocol === 'https:';
 
     let wsEndpoint;
     let httpHeaders;
