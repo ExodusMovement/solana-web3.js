@@ -134,7 +134,7 @@ function generateConfig(configType, format) {
         {
           file: 'lib/index.cjs.js',
           format: 'cjs',
-          sourcemap: true,
+          sourcemap: false,
         },
         /*{
           file: 'lib/index.esm.js',
