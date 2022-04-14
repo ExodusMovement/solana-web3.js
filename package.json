@@ -19,6 +19,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "browser": {
+    "./lib/index.cjs.js": "./lib/index.browser.esm.js",
+    "./lib/index.esm.js": "./lib/index.browser.esm.js"
+  },
   "main": "lib/index.cjs.js",
   "types": "lib/index.d.ts",
   "browserslist": [
