@@ -64,6 +64,7 @@
     "@babel/runtime": "^7.12.5",
     "@ethersproject/sha2": "^5.5.0",
     "@exodus/fetch": "^1.2.1",
+    "@exodus/rpc-websockets": "^7.5.0-exodus.3",
     "@solana/buffer-layout": "^3.0.0",
     "bn.js": "^5.0.0",
     "borsh": "^0.4.0",
@@ -71,7 +72,6 @@
     "buffer": "^6.0.1",
     "jayson": "^3.4.4",
     "js-sha3": "^0.8.0",
-    "rpc-websockets": "^7.4.2",
     "secp256k1": "^4.0.2",
     "superstruct": "^0.14.2",
     "tweetnacl": "^1.0.0"

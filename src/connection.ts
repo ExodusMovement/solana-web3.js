@@ -20,9 +20,9 @@ import {
   any,
 } from 'superstruct';
 import type {Struct} from 'superstruct';
-import {Client as RpcWebSocketClient} from 'rpc-websockets';
+import {Client as RpcWebSocketClient} from '@exodus/rpc-websockets';
 import RpcClient from 'jayson/lib/client/browser';
-import {IWSRequestParams} from 'rpc-websockets/dist/lib/client';
+import {IWSRequestParams} from '@exodus/rpc-websockets/dist/lib/client';
 
 import {AgentManager} from './agent-manager';
 import {EpochSchedule} from './epoch-schedule';
