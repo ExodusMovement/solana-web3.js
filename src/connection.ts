@@ -1,7 +1,6 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
-import { fetch } from '@exodus/fetch';
-import type {Response} from 'cross-fetch';
+import {fetch} from '@exodus/fetch';
 import {
   type as pick,
   number,

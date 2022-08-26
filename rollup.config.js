@@ -50,6 +50,7 @@ function generateConfig(configType, format) {
     // Prevent dependencies from being bundled
     config.external = [
       /@babel\/runtime/,
+      '@exodus/fetch',
       '@solana/buffer-layout',
       'bn.js',
       'borsh',
@@ -58,7 +59,6 @@ function generateConfig(configType, format) {
       'crypto-hash',
       'jayson/lib/client/browser',
       'js-sha3',
-      'cross-fetch',
       'rpc-websockets',
       'secp256k1',
       'superstruct',
@@ -81,6 +81,7 @@ function generateConfig(configType, format) {
           // Prevent dependencies from being bundled
           config.external = [
             /@babel\/runtime/,
+            '@exodus/fetch',
             '@solana/buffer-layout',
             'bn.js',
             'borsh',
