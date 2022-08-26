@@ -52,6 +52,7 @@ function generateConfig(configType, format) {
       /@babel\/runtime/,
       '@exodus/fetch',
       '@exodus/rpc-websockets',
+      '@exodus/secp256k1',
       '@solana/buffer-layout',
       'bn.js',
       'borsh',
@@ -60,7 +61,6 @@ function generateConfig(configType, format) {
       'crypto-hash',
       'jayson/lib/client/browser',
       'js-sha3',
-      'secp256k1',
       'superstruct',
       'tweetnacl',
     ];
@@ -83,6 +83,7 @@ function generateConfig(configType, format) {
             /@babel\/runtime/,
             '@exodus/fetch',
             '@exodus/rpc-websockets',
+            '@exodus/secp256k1',
             '@solana/buffer-layout',
             'bn.js',
             'borsh',
@@ -93,7 +94,6 @@ function generateConfig(configType, format) {
             'https',
             'jayson/lib/client/browser',
             'js-sha3',
-            'secp256k1',
             'superstruct',
             'tweetnacl',
           ];
