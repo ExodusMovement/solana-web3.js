@@ -2,7 +2,6 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 // @ts-ignore
 import fastStableStringify from 'fast-stable-stringify';
-import {fetch} from '@exodus/fetch';
 import {
   type as pick,
   number,
@@ -24,7 +23,6 @@ import {
 import type {Struct} from 'superstruct';
 import {Client as RpcWebSocketClient} from '@exodus/rpc-websockets';
 import RpcClient from 'jayson/lib/client/browser';
-import {IWSRequestParams} from '@exodus/rpc-websockets/dist/lib/client';
 
 import {AgentManager} from './agent-manager';
 import {EpochSchedule} from './epoch-schedule';
