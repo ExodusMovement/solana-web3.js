@@ -92,6 +92,9 @@ function generateConfig(configType, format) {
     // Prevent dependencies from being bundled
     config.external = [
       /@babel\/runtime/,
+      '@exodus/fetch',
+      '@exodus/rpc-websockets',
+      '@exodus/secp256k1',
       '@solana/buffer-layout',
       'bigint-buffer',
       'bn.js',
@@ -112,6 +115,37 @@ function generateConfig(configType, format) {
   switch (configType) {
     case 'browser':
       switch (format) {
+        case 'esm': {
+          config.output = [
+            {
+              file: 'lib/index.browser.esm.js',
+              format: 'es',
+              sourcemap: false,
+            },
+          ];
+
+          // Prevent dependencies from being bundled
+          config.external = [
+            /@babel\/runtime/,
+            '@exodus/fetch',
+            '@exodus/rpc-websockets',
+            '@exodus/secp256k1',
+            '@solana/buffer-layout',
+            'bn.js',
+            'borsh',
+            'bs58',
+            'buffer',
+            'crypto-hash',
+            'http',
+            'https',
+            'jayson/lib/client/browser',
+            'js-sha3',
+            'superstruct',
+            'tweetnacl',
+          ];
+
+          break;
+        }
         case 'iife': {
           config.external = ['http', 'https', 'node-fetch'];
 
@@ -182,13 +216,13 @@ function generateConfig(configType, format) {
         {
           file: 'lib/index.cjs.js',
           format: 'cjs',
-          sourcemap: true,
+          sourcemap: false,
         },
-        {
+        /*{
           file: 'lib/index.esm.js',
           format: 'es',
           sourcemap: true,
-        },
+        },*/
       ];
       break;
     default:
@@ -200,6 +234,6 @@ function generateConfig(configType, format) {
 
 export default [
   generateConfig('node'),
-  generateConfig('browser'),
-  generateConfig('browser', 'iife'),
+  generateConfig('browser', 'esm'),
+  // generateConfig('browser', 'iife'),
 ];

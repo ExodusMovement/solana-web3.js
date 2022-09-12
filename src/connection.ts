@@ -2,6 +2,7 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 // @ts-ignore
 import fastStableStringify from 'fast-stable-stringify';
+import {fetch} from '@exodus/fetch';
 import {
   type as pick,
   number,
@@ -21,8 +22,9 @@ import {
   any,
 } from 'superstruct';
 import type {Struct} from 'superstruct';
-import {Client as RpcWebSocketClient} from 'rpc-websockets';
+import {Client as RpcWebSocketClient} from '@exodus/rpc-websockets';
 import RpcClient from 'jayson/lib/client/browser';
+import {IWSRequestParams} from '@exodus/rpc-websockets/dist/lib/client';
 
 import {AgentManager} from './agent-manager';
 import {EpochSchedule} from './epoch-schedule';
@@ -2276,7 +2278,10 @@ export class Connection {
     commitmentOrConfig?: Commitment | ConnectionConfig,
   ) {
     let url = new URL(endpoint);
-    const useHttps = url.protocol === 'https:';
+    if(!endpoint.startsWith('https://')){
+        throw new Error(`unsupported URL: ${endpoint}`);
+    };
+    const useHttps = true; //url.protocol === 'https:';
 
     let wsEndpoint;
     let httpHeaders;
