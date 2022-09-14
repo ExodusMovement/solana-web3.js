@@ -1,7 +1,7 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 // @ts-ignore
-import fastStableStringify from 'fast-stable-stringify';
+import jsonStableStringify from 'json-stable-stringify';
 import {
   type as pick,
   number,
@@ -4558,7 +4558,7 @@ export class Connection {
     args: IWSRequestParams,
   ): ClientSubscriptionId {
     const clientSubscriptionId = this._nextClientSubscriptionId++;
-    const hash = fastStableStringify(
+    const hash = jsonStableStringify(
       [subscriptionConfig.method, args],
       true /* isArrayProp */,
     );

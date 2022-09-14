@@ -104,6 +104,7 @@ function generateConfig(configType, format) {
       'crypto-hash',
       'jayson/lib/client/browser',
       'js-sha3',
+      'json-stable-stringify',
       'node-fetch',
       'rpc-websockets',
       'secp256k1',
@@ -140,6 +141,7 @@ function generateConfig(configType, format) {
             'https',
             'jayson/lib/client/browser',
             'js-sha3',
+            'json-stable-stringify',
             'superstruct',
             'tweetnacl',
           ];
@@ -195,6 +197,7 @@ function generateConfig(configType, format) {
             'https',
             'jayson/lib/client/browser',
             'js-sha3',
+            'json-stable-stringify',
             'node-fetch',
             'rpc-websockets',
             'secp256k1',
