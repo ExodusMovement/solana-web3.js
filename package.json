@@ -1,6 +1,6 @@
 {
   "name": "@exodus/solana-web3.js",
-  "version": "1.43.6-exodus.1",
+  "version": "1.43.6-exodus.2",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
@@ -71,7 +71,6 @@
     "json-stable-stringify": "^1.0.1",
     "node-fetch": "2",
     "rpc-websockets": "^7.4.2",
-    "secp256k1": "^4.0.2",
     "superstruct": "^0.14.2",
     "tweetnacl": "^1.0.0"
   },
