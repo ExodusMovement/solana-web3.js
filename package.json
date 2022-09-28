@@ -1,6 +1,6 @@
 {
   "name": "@exodus/solana-web3.js",
-  "version": "1.43.6-exodus.2",
+  "version": "1.43.6-exodus.3",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "browser": {
-    "./lib/index.cjs.js": "./lib/index.browser.cjs.js",
+    "./lib/index.cjs.js": "./lib/index.browser.esm.js",
     "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
   "main": "lib/index.cjs.js",
