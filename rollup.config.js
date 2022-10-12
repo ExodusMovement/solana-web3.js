@@ -95,6 +95,8 @@ function generateConfig(configType, format) {
     // Prevent dependencies from being bundled
     config.external = [
       /@babel\/runtime/,
+      '@exodus/fetch',
+      '@exodus/rpc-websockets',
       '@noble/hashes/hmac',
       '@noble/hashes/sha256',
       '@noble/hashes/sha3',
@@ -109,6 +111,7 @@ function generateConfig(configType, format) {
       'buffer',
       'crypto-hash',
       'jayson/lib/client/browser',
+      'json-stable-stringify',
       'node-fetch',
       'rpc-websockets',
       'superstruct',
@@ -119,6 +122,38 @@ function generateConfig(configType, format) {
     case 'browser':
     case 'react-native':
       switch (format) {
+        case 'esm': {
+          config.output = [
+            {
+              file: 'lib/index.browser.esm.js',
+              format: 'es',
+              sourcemap: false,
+            },
+          ];
+
+          // Prevent dependencies from being bundled
+          config.external = [
+            /@babel\/runtime/,
+            '@exodus/fetch',
+            '@exodus/rpc-websockets',
+            '@exodus/secp256k1',
+            '@solana/buffer-layout',
+            'bn.js',
+            'borsh',
+            'bs58',
+            'buffer',
+            'crypto-hash',
+            'http',
+            'https',
+            'jayson/lib/client/browser',
+            'js-sha3',
+            'json-stable-stringify',
+            'superstruct',
+            'tweetnacl',
+          ];
+
+          break;
+        }
         case 'iife': {
           config.external = ['http', 'https', 'node-fetch'];
 
@@ -177,6 +212,7 @@ function generateConfig(configType, format) {
             'http',
             'https',
             'jayson/lib/client/browser',
+            'json-stable-stringify',
             'node-fetch',
             'react-native-url-polyfill',
             'rpc-websockets',
@@ -192,13 +228,13 @@ function generateConfig(configType, format) {
         {
           file: 'lib/index.cjs.js',
           format: 'cjs',
-          sourcemap: true,
+          sourcemap: false,
         },
-        {
+        /*{
           file: 'lib/index.esm.js',
           format: 'es',
           sourcemap: true,
-        },
+        },*/
       ];
       break;
     default:
@@ -210,7 +246,7 @@ function generateConfig(configType, format) {
 
 export default [
   generateConfig('node'),
-  generateConfig('browser'),
-  generateConfig('browser', 'iife'),
+  generateConfig('browser', 'esm'),
+  // generateConfig('browser', 'iife'),
   generateConfig('react-native'),
 ];

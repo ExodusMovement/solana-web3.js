@@ -1,7 +1,7 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 // @ts-ignore
-import fastStableStringify from 'fast-stable-stringify';
+import jsonStableStringify from 'json-stable-stringify';
 import {
   type as pick,
   number,
@@ -21,7 +21,7 @@ import {
   any,
 } from 'superstruct';
 import type {Struct} from 'superstruct';
-import {Client as RpcWebSocketClient} from 'rpc-websockets';
+import {Client as RpcWebSocketClient} from '@exodus/rpc-websockets';
 import RpcClient from 'jayson/lib/client/browser';
 
 import {AgentManager} from './agent-manager';
@@ -5245,7 +5245,7 @@ export class Connection {
     args: IWSRequestParams,
   ): ClientSubscriptionId {
     const clientSubscriptionId = this._nextClientSubscriptionId++;
-    const hash = fastStableStringify(
+    const hash = jsonStableStringify(
       [subscriptionConfig.method, args],
       true /* isArrayProp */,
     );
