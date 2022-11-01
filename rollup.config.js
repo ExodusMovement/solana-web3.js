@@ -252,5 +252,5 @@ export default [
   generateConfig('node'),
   generateConfig('browser', 'esm'),
   // generateConfig('browser', 'iife'),
-  generateConfig('react-native'),
+  // generateConfig('react-native'),
 ];
