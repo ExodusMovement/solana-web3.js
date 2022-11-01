@@ -1,6 +1,7 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
-import {keccak_256} from '@noble/hashes/sha3';
+// @ts-ignore
+import {keccak256} from '@exodus/js-sha3';
 
 import {PublicKey} from '../publickey';
 import {TransactionInstruction} from '../transaction';
@@ -98,9 +99,9 @@ export class Secp256k1Program {
     );
 
     try {
-      return Buffer.from(keccak_256(toBuffer(publicKey))).slice(
-        -ETHEREUM_ADDRESS_BYTES,
-      );
+      return Buffer.from(
+        keccak256.create().update(toBuffer(publicKey)).digest(),
+      ).slice(-ETHEREUM_ADDRESS_BYTES);
     } catch (error) {
       throw new Error(`Error constructing Ethereum address: ${error}`);
     }
@@ -211,7 +212,9 @@ export class Secp256k1Program {
         privateKey,
         false /* isCompressed */,
       ).slice(1); // throw away leading byte
-      const messageHash = Buffer.from(keccak_256(toBuffer(message)));
+      const messageHash = Buffer.from(
+        keccak256.create().update(toBuffer(message)).digest(),
+      );
       const [signature, recoveryId] = ecdsaSign(messageHash, privateKey);
 
       return this.createInstructionWithPublicKey({

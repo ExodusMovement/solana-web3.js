@@ -96,11 +96,9 @@ function generateConfig(configType, format) {
     config.external = [
       /@babel\/runtime/,
       '@exodus/fetch',
+      'readable-stream',
       '@exodus/rpc-websockets',
-      '@noble/hashes/hmac',
-      '@noble/hashes/sha256',
-      '@noble/hashes/sha3',
-      '@noble/hashes/sha512',
+      '@exodus/js-sha3',
       '@noble/ed25519',
       '@noble/secp256k1',
       '@solana/buffer-layout',
@@ -110,11 +108,14 @@ function generateConfig(configType, format) {
       'bs58',
       'buffer',
       'crypto-hash',
+      'create-hmac',
       'jayson/lib/client/browser',
       'json-stable-stringify',
       'node-fetch',
       'rpc-websockets',
       'superstruct',
+      'sha.js',
+      'tweetnacl',
     ];
   }
 
@@ -135,7 +136,9 @@ function generateConfig(configType, format) {
           config.external = [
             /@babel\/runtime/,
             '@exodus/fetch',
+            'readable-stream',
             '@exodus/rpc-websockets',
+            '@exodus/js-sha3',
             '@exodus/secp256k1',
             '@solana/buffer-layout',
             'bn.js',
@@ -143,12 +146,13 @@ function generateConfig(configType, format) {
             'bs58',
             'buffer',
             'crypto-hash',
+            'create-hmac',
             'http',
             'https',
             'jayson/lib/client/browser',
-            'js-sha3',
             'json-stable-stringify',
             'superstruct',
+            'sha.js',
             'tweetnacl',
           ];
 
@@ -196,14 +200,12 @@ function generateConfig(configType, format) {
           // Prevent dependencies from being bundled
           config.external = [
             /@babel\/runtime/,
+            '@exodus/js-sha3',
+            'readable-stream',
             '@solana/buffer-layout',
-            '@noble/hashes/hmac',
-            '@noble/hashes/sha256',
-            '@noble/hashes/sha3',
-            '@noble/hashes/sha512',
-            '@noble/ed25519',
             '@noble/secp256k1',
             'bigint-buffer',
+            'create-hmac',
             'bn.js',
             'borsh',
             'bs58',
@@ -217,6 +219,8 @@ function generateConfig(configType, format) {
             'react-native-url-polyfill',
             'rpc-websockets',
             'superstruct',
+            'sha.js',
+            'tweetnacl',
           ];
 
           break;

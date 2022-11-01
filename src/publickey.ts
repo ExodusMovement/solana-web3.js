@@ -1,7 +1,8 @@
 import BN from 'bn.js';
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
-import {sha256} from '@noble/hashes/sha256';
+// @ts-ignore
+import {sha256} from 'sha.js';
 
 import {isOnCurve} from './utils/ed25519';
 import {Struct, SOLANA_SCHEMA} from './utils/borsh-schema';
@@ -151,7 +152,7 @@ export class PublicKey extends Struct {
       Buffer.from(seed),
       programId.toBuffer(),
     ]);
-    const publicKeyBytes = sha256(buffer);
+    const publicKeyBytes = new Uint8Array(new sha256().update(buffer).digest());
     return new PublicKey(publicKeyBytes);
   }
 
@@ -175,7 +176,7 @@ export class PublicKey extends Struct {
       programId.toBuffer(),
       Buffer.from('ProgramDerivedAddress'),
     ]);
-    const publicKeyBytes = sha256(buffer);
+    const publicKeyBytes = new Uint8Array(new sha256().update(buffer).digest());
     if (isOnCurve(publicKeyBytes)) {
       throw new Error(`Invalid seeds, address must fall off the curve`);
     }
