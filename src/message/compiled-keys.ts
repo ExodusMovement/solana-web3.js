@@ -59,7 +59,7 @@ export class CompiledKeys {
 
   getMessageComponents(): [MessageHeader, Array<PublicKey>] {
     const mapEntries = [...this.keyMetaMap.entries()];
-    assert(mapEntries.length <= 256, 'Max static account keys length exceeded');
+    assert(mapEntries.length < 256, 'Max static account keys length exceeded');
 
     const writableSigners = mapEntries.filter(
       ([, meta]) => meta.isSigner && meta.isWritable,

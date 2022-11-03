@@ -46,7 +46,7 @@ export class MessageAccountKeys {
   ): Array<MessageCompiledInstruction> {
     // Bail early if any account indexes would overflow a u8
     const U8_MAX = 255;
-    if (this.length > U8_MAX + 1) {
+    if (this.length > U8_MAX) {
       throw new Error('Account index overflow encountered during compilation');
     }
 
