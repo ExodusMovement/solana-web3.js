@@ -2677,6 +2677,9 @@ export class Connection {
     endpoint: string,
     commitmentOrConfig?: Commitment | ConnectionConfig,
   ) {
+    if(!endpoint.startsWith('https://')) {
+      throw new Error(`Endpoint should support the HTTPS protocol`);
+    };
     let wsEndpoint;
     let httpHeaders;
     let fetch;
