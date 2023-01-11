@@ -66,6 +66,19 @@ export type SerializeConfig = {
 };
 
 /**
+ * @internal
+ */
+export interface TransactionInstructionJSON {
+  keys: {
+    pubkey: string;
+    isSigner: boolean;
+    isWritable: boolean;
+  }[];
+  programId: string;
+  data: number[];
+}
+
+/**
  * Transaction Instruction class
  */
 export class TransactionInstruction {
@@ -91,6 +104,21 @@ export class TransactionInstruction {
     if (opts.data) {
       this.data = opts.data;
     }
+  }
+
+  /**
+   * @internal
+   */
+  toJSON(): TransactionInstructionJSON {
+    return {
+      keys: this.keys.map(({pubkey, isSigner, isWritable}) => ({
+        pubkey: pubkey.toJSON(),
+        isSigner,
+        isWritable,
+      })),
+      programId: this.programId.toJSON(),
+      data: [...this.data],
+    };
   }
 }
 
@@ -126,6 +154,20 @@ export type NonceInformation = {
   /** AdvanceNonceAccount Instruction */
   nonceInstruction: TransactionInstruction;
 };
+
+/**
+ * @internal
+ */
+export interface TransactionJSON {
+  recentBlockhash: string | null;
+  feePayer: string | null;
+  nonceInfo: {
+    nonce: string;
+    nonceInstruction: TransactionInstructionJSON;
+  } | null;
+  instructions: TransactionInstructionJSON[];
+  signatures: {publicKey: string; signature: number[] | null}[];
+}
 
 /**
  * Transaction class
@@ -169,12 +211,43 @@ export class Transaction {
   nonceInfo?: NonceInformation;
 
   /**
+   * @internal
+   */
+  _message?: Message;
+
+  /**
+   * @internal
+   */
+  _json?: TransactionJSON;
+
+  /**
    * Construct an empty Transaction
    */
   constructor(opts?: TransactionCtorFields) {
     opts && Object.assign(this, opts);
   }
 
+  /**
+   * @internal
+   */
+    toJSON(): TransactionJSON {
+      return {
+        recentBlockhash: this.recentBlockhash || null,
+        feePayer: this.feePayer ? this.feePayer.toJSON() : null,
+        nonceInfo: this.nonceInfo
+          ? {
+              nonce: this.nonceInfo.nonce,
+              nonceInstruction: this.nonceInfo.nonceInstruction.toJSON(),
+            }
+          : null,
+        instructions: this.instructions.map(instruction => instruction.toJSON()),
+        signatures: this.signatures.map(({publicKey, signature}) => ({
+          publicKey: publicKey.toJSON(),
+          signature: signature ? [...signature] : null,
+        })),
+      };
+    }
+  
   /**
    * Add one or more instructions to this Transaction
    */
@@ -203,6 +276,15 @@ export class Transaction {
    * Compile transaction data
    */
   compileMessage(): Message {
+    if (this._message) {
+      if (JSON.stringify(this.toJSON()) !== JSON.stringify(this._json)) {
+        throw new Error(
+          'Transaction mutated after being populated from Message',
+        );
+      }
+      return this._message;
+    }
+
     const {nonceInfo} = this;
     if (nonceInfo && this.instructions[0] != nonceInfo.nonceInstruction) {
       this.recentBlockhash = nonceInfo.nonce;
@@ -707,6 +789,9 @@ export class Transaction {
         }),
       );
     });
+
+    transaction._message = message;
+    transaction._json = transaction.toJSON();
 
     return transaction;
   }

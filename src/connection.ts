@@ -3518,6 +3518,8 @@ export class Connection {
       transaction = transactionOrMessage;
     } else {
       transaction = Transaction.populate(transactionOrMessage);
+      // HACK: this function relies on mutating the populated transaction
+      transaction._message = transaction._json = undefined;
     }
 
     if (transaction.nonceInfo && signers) {
