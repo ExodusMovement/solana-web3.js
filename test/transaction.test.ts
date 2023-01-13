@@ -5,7 +5,7 @@ import {expect} from 'chai';
 
 import {Keypair} from '../src/keypair';
 import {PublicKey} from '../src/publickey';
-import {Transaction} from '../src/transaction';
+import {Transaction, TransactionInstruction} from '../src/transaction';
 import {StakeProgram} from '../src/stake-program';
 import {SystemProgram} from '../src/system-program';
 import {Message} from '../src/message';
@@ -341,14 +341,14 @@ describe('Transaction', () => {
     }).add(transfer);
     expectedTransaction.sign(sender);
 
-    const wireTransaction = Buffer.from(
+    const serializedTransaction = Buffer.from(
       'AVuErQHaXv0SG0/PchunfxHKt8wMRfMZzqV0tkC5qO6owYxWU2v871AoWywGoFQr4z+q/7mE8lIufNl/kxj+nQ0BAAEDE5j2LG0aRXxRumpLXz29L2n8qTIWIY3ImX5Ba9F9k8r9Q5/Mtmcn8onFxt47xKj+XdXXd3C8j/FcPu7csUrz/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxJrndgN4IFTxep3s6kO0ROug7bEsbx0xxuDkqEvwUusBAgIAAQwCAAAAMQAAAAAAAAA=',
       'base64',
     );
-    const tx = Transaction.from(wireTransaction);
+    const deserializedTransaction = Transaction.from(serializedTransaction);
 
-    expect(tx).to.eql(expectedTransaction);
-    expect(wireTransaction).to.eql(expectedTransaction.serialize());
+    expect(expectedTransaction.serialize()).to.eql(serializedTransaction);
+    expect(deserializedTransaction.serialize()).to.eql(serializedTransaction);
   });
 
   it('populate transaction', () => {
@@ -385,6 +385,54 @@ describe('Transaction', () => {
     expect(transaction.instructions).to.have.length(1);
     expect(transaction.signatures).to.have.length(2);
     expect(transaction.recentBlockhash).to.eq(recentBlockhash);
+  });
+
+  it('populate then compile transaction', () => {
+    const recentBlockhash = new PublicKey(1).toString();
+    const message = new Message({
+      accountKeys: [
+        new PublicKey(1).toString(),
+        new PublicKey(2).toString(),
+        new PublicKey(3).toString(),
+        new PublicKey(4).toString(),
+        new PublicKey(5).toString(),
+      ],
+      header: {
+        numReadonlySignedAccounts: 0,
+        numReadonlyUnsignedAccounts: 3,
+        numRequiredSignatures: 2,
+      },
+      instructions: [
+        {
+          accounts: [1, 2, 3],
+          data: bs58.encode(Buffer.alloc(5).fill(9)),
+          programIdIndex: 2,
+        },
+      ],
+      recentBlockhash,
+    });
+
+    const signatures = [
+      bs58.encode(Buffer.alloc(64).fill(1)),
+      bs58.encode(Buffer.alloc(64).fill(2)),
+    ];
+
+    const transaction = Transaction.populate(message, signatures);
+    const compiledMessage = transaction.compileMessage();
+    expect(compiledMessage).to.eql(message);
+
+    // show that without caching the message, the populated message
+    // might not be the same when re-compiled
+    transaction._message = undefined;
+    const compiledMessage2 = transaction.compileMessage();
+    expect(compiledMessage2).not.to.eql(message);
+
+    // show that even if message is cached, transaction may still
+    // be modified
+    transaction._message = message;
+    transaction.recentBlockhash = new PublicKey(100).toString();
+    const compiledMessage3 = transaction.compileMessage();
+    expect(compiledMessage3).not.to.eql(message);
   });
 
   it('serialize unsigned transaction', () => {
@@ -504,5 +552,87 @@ describe('Transaction', () => {
     const signature = nacl.sign.detached(tx_bytes, from.secretKey);
     tx.addSignature(from.publicKey, toBuffer(signature));
     expect(tx.verifySignatures()).to.be.true;
+  });
+
+  it('can serialize, deserialize, and reserialize with a partial signer', () => {
+    const signer = Keypair.generate();
+    const acc0Writable = Keypair.generate();
+    const acc1Writable = Keypair.generate();
+    const acc2Writable = Keypair.generate();
+    const t0 = new Transaction({
+      recentBlockhash: 'HZaTsZuhN1aaz9WuuimCFMyH7wJ5xiyMUHFCnZSMyguH',
+      feePayer: signer.publicKey,
+    });
+    t0.add(
+      new TransactionInstruction({
+        keys: [
+          {
+            pubkey: signer.publicKey,
+            isWritable: true,
+            isSigner: true,
+          },
+          {
+            pubkey: acc0Writable.publicKey,
+            isWritable: true,
+            isSigner: false,
+          },
+        ],
+        programId: Keypair.generate().publicKey,
+      }),
+    );
+    t0.add(
+      new TransactionInstruction({
+        keys: [
+          {
+            pubkey: acc1Writable.publicKey,
+            isWritable: false,
+            isSigner: false,
+          },
+        ],
+        programId: Keypair.generate().publicKey,
+      }),
+    );
+    t0.add(
+      new TransactionInstruction({
+        keys: [
+          {
+            pubkey: acc2Writable.publicKey,
+            isWritable: true,
+            isSigner: false,
+          },
+        ],
+        programId: Keypair.generate().publicKey,
+      }),
+    );
+    t0.add(
+      new TransactionInstruction({
+        keys: [
+          {
+            pubkey: signer.publicKey,
+            isWritable: true,
+            isSigner: true,
+          },
+          {
+            pubkey: acc0Writable.publicKey,
+            isWritable: false,
+            isSigner: false,
+          },
+          {
+            pubkey: acc2Writable.publicKey,
+            isWritable: false,
+            isSigner: false,
+          },
+          {
+            pubkey: acc1Writable.publicKey,
+            isWritable: true,
+            isSigner: false,
+          },
+        ],
+        programId: Keypair.generate().publicKey,
+      }),
+    );
+    const t1 = Transaction.from(t0.serialize({requireAllSignatures: false}));
+    t1.partialSign(signer);
+    t1.serialize();
   });
 });
