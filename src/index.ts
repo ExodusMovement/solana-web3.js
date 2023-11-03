@@ -8,7 +8,7 @@ export * from './ed25519-program';
 export * from './fee-calculator';
 export * from './keypair';
 export * from './loader';
-export * from './message';
+export * from './message/legacy';
 export * from './nonce-account';
 export * from './publickey';
 export * from './stake-program';

@@ -13,6 +13,11 @@ import {toBuffer} from './util/to-buffer';
 export const MAX_SEED_LENGTH = 32;
 
 /**
+ * Size of public key in bytes
+ */
+export const PUBLIC_KEY_LENGTH = 32;
+
+/**
  * Value to be converted into public key
  */
 export type PublicKeyInitData =
@@ -34,6 +39,9 @@ export type PublicKeyData = {
 function isPublicKeyData(value: PublicKeyInitData): value is PublicKeyData {
   return (value as PublicKeyData)._bn !== undefined;
 }
+
+// local counter used by PublicKey.unique()
+let uniquePublicKeyCounter = 1;
 
 /**
  * A public key
@@ -67,6 +75,15 @@ export class PublicKey extends Struct {
       }
     }
   }
+
+  /**
+   * Returns a unique PublicKey for tests and benchmarks using acounter
+   */
+    static unique(): PublicKey {
+      const key = new PublicKey(uniquePublicKeyCounter);
+      uniquePublicKeyCounter += 1;
+      return new PublicKey(key.toBuffer());
+    }
 
   /**
    * Default public key value. (All zeros)
@@ -143,10 +160,10 @@ export class PublicKey extends Struct {
    * Derive a program address from seeds and a program ID.
    */
   /* eslint-disable require-await */
-  static async createProgramAddress(
+  static createProgramAddressSync(
     seeds: Array<Buffer | Uint8Array>,
     programId: PublicKey,
-  ): Promise<PublicKey> {
+  ): PublicKey {
     let buffer = Buffer.alloc(0);
     seeds.forEach(function (seed) {
       if (seed.length > MAX_SEED_LENGTH) {
@@ -166,6 +183,46 @@ export class PublicKey extends Struct {
     }
     return new PublicKey(publicKeyBytes);
   }
+
+  /**
+   * Derive a program address from seeds and a program ID.
+   */
+  /* eslint-disable require-await */
+  static async createProgramAddress(
+    seeds: Array<Buffer | Uint8Array>,
+    programId: PublicKey,
+  ): Promise<PublicKey> {
+    return this.createProgramAddressSync(seeds, programId)
+  }
+
+  /**
+   * Find a valid program address
+   *
+   * Valid program addresses must fall off the ed25519 curve.  This function
+   * iterates a nonce until it finds one that when combined with the seeds
+   * results in a valid program address.
+   */
+    static findProgramAddressSync(
+      seeds: Array<Buffer | Uint8Array>,
+      programId: PublicKey,
+    ): [PublicKey, number] {
+      let nonce = 255;
+      let address;
+      while (nonce != 0) {
+        try {
+          const seedsWithNonce = seeds.concat(Buffer.from([nonce]));
+          address = this.createProgramAddressSync(seedsWithNonce, programId);
+        } catch (err) {
+          if (err instanceof TypeError) {
+            throw err;
+          }
+          nonce--;
+          continue;
+        }
+        return [address, nonce];
+      }
+      throw new Error(`Unable to find a viable program address nonce`);
+    }
 
   /**
    * Find a valid program address

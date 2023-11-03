@@ -1,5 +1,6 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
+// @ts-ignore
 import {fetch} from '@exodus/fetch';
 import {
   type as pick,
@@ -32,7 +33,7 @@ import {PublicKey} from './publickey';
 import {Signer} from './keypair';
 import {MS_PER_SLOT} from './timing';
 import {Transaction} from './transaction';
-import {Message} from './message';
+import {Message} from './message/legacy';
 import assert from './util/assert';
 import {sleep} from './util/sleep';
 import {promiseTimeout} from './util/promise-timeout';
@@ -41,7 +42,7 @@ import {makeWebsocketUrl} from './util/url';
 import type {Blockhash} from './blockhash';
 import type {FeeCalculator} from './fee-calculator';
 import type {TransactionSignature} from './transaction';
-import type {CompiledInstruction} from './message';
+import type {CompiledInstruction} from './message/legacy';
 
 const PublicKeyFromString = coerce(
   instance(PublicKey),

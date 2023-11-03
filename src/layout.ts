@@ -11,6 +11,13 @@ export const publicKey = (
 };
 
 /**
+ * Layout for a signature
+ */
+export const signature = (property: string = 'signature') => {
+  return BufferLayout.blob(64, property);
+};
+
+/**
  * Layout for a 64bit unsigned value
  */
 export const uint64 = (property: string = 'uint64'): BufferLayout.Layout => {

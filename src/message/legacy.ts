@@ -2,12 +2,12 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 
-import {PublicKey} from './publickey';
-import type {Blockhash} from './blockhash';
-import * as Layout from './layout';
-import {PACKET_DATA_SIZE} from './transaction';
-import * as shortvec from './util/shortvec-encoding';
-import {toBuffer} from './util/to-buffer';
+import {PublicKey} from '../publickey';
+import type {Blockhash} from '../blockhash';
+import * as Layout from '../layout';
+import {PACKET_DATA_SIZE} from '../transaction';
+import * as shortvec from '../util/shortvec-encoding';
+import {toBuffer} from '../util/to-buffer';
 
 /**
  * The message header, identifying signed and read-only account
@@ -81,6 +81,14 @@ export class Message {
         this.accountKeys[ix.programIdIndex],
       ),
     );
+  }
+
+  get version(): 'legacy' {
+    return 'legacy';
+  }
+
+  get staticAccountKeys(): Array<PublicKey> {
+    return this.accountKeys;
   }
 
   isAccountSigner(index: number): boolean {

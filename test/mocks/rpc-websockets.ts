@@ -39,6 +39,7 @@ export const mockRpcMessage = ({
 
 export const stubRpcWebSocket = (connection: Connection) => {
   const rpcWebSocket = connection._rpcWebSocket;
+  // @ts-ignore
   const mockClient = new MockClient(rpcWebSocket);
   sandbox.stub(rpcWebSocket, 'connect').callsFake(() => {
     mockClient.connect();
