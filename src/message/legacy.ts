@@ -5,24 +5,12 @@ import * as BufferLayout from '@solana/buffer-layout';
 import {PublicKey} from '../publickey';
 import type {Blockhash} from '../blockhash';
 import * as Layout from '../layout';
-import {PACKET_DATA_SIZE} from '../transaction';
+import {PACKET_DATA_SIZE, TransactionInstruction, VERSION_PREFIX_MASK} from '../transaction';
 import * as shortvec from '../util/shortvec-encoding';
 import {toBuffer} from '../util/to-buffer';
-
-/**
- * The message header, identifying signed and read-only account
- */
-export type MessageHeader = {
-  /**
-   * The number of signatures required for this message to be considered valid. The
-   * signatures must match the first `numRequiredSignatures` of `accountKeys`.
-   */
-  numRequiredSignatures: number;
-  /** The last `numReadonlySignedAccounts` of the signed keys are read-only accounts */
-  numReadonlySignedAccounts: number;
-  /** The last `numReadonlySignedAccounts` of the unsigned keys are read-only accounts */
-  numReadonlyUnsignedAccounts: number;
-};
+import { MessageHeader, MessageAddressTableLookup, MessageCompiledInstruction, } from './index'
+import {CompiledKeys} from './compiled-keys';
+import {MessageAccountKeys} from './account-keys';
 
 /**
  * An instruction to execute by a program
@@ -47,11 +35,17 @@ export type MessageArgs = {
   /** The message header, identifying signed and read-only `accountKeys` */
   header: MessageHeader;
   /** All the account keys used by this transaction */
-  accountKeys: string[];
+  accountKeys: string[] | PublicKey[];
   /** The hash of a recent ledger block */
   recentBlockhash: Blockhash;
   /** Instructions that will be executed in sequence and committed in one atomic transaction if all succeed. */
   instructions: CompiledInstruction[];
+};
+
+export type CompileLegacyArgs = {
+  payerKey: PublicKey;
+  instructions: Array<TransactionInstruction>;
+  recentBlockhash: Blockhash;
 };
 
 const PUBKEY_LENGTH = 32;
@@ -89,6 +83,43 @@ export class Message {
 
   get staticAccountKeys(): Array<PublicKey> {
     return this.accountKeys;
+  }
+
+  get compiledInstructions(): Array<MessageCompiledInstruction> {
+    return this.instructions.map(
+      (ix): MessageCompiledInstruction => ({
+        programIdIndex: ix.programIdIndex,
+        accountKeyIndexes: ix.accounts,
+        data: bs58.decode(ix.data),
+      }),
+    );
+  }
+
+  get addressTableLookups(): Array<MessageAddressTableLookup> {
+    return [];
+  }
+
+  getAccountKeys(): MessageAccountKeys {
+    return new MessageAccountKeys(this.staticAccountKeys);
+  }
+
+  static compile(args: CompileLegacyArgs): Message {
+    const compiledKeys = CompiledKeys.compile(args.instructions, args.payerKey);
+    const [header, staticAccountKeys] = compiledKeys.getMessageComponents();
+    const accountKeys = new MessageAccountKeys(staticAccountKeys);
+    const instructions = accountKeys.compileInstructions(args.instructions).map(
+      (ix: MessageCompiledInstruction): CompiledInstruction => ({
+        programIdIndex: ix.programIdIndex,
+        accounts: ix.accountKeyIndexes,
+        data: bs58.encode(ix.data),
+      }),
+    );
+    return new Message({
+      header,
+      accountKeys: staticAccountKeys,
+      recentBlockhash: args.recentBlockhash,
+      instructions,
+    });
   }
 
   isAccountSigner(index: number): boolean {
@@ -214,6 +245,16 @@ export class Message {
     let byteArray = [...buffer];
 
     const numRequiredSignatures = byteArray.shift() as number;
+    if (
+      numRequiredSignatures !==
+      (numRequiredSignatures & VERSION_PREFIX_MASK)
+    ) {
+      throw new Error(
+        'Versioned messages must be deserialized with VersionedMessage.deserialize()',
+      );
+    }
+
+    
     const numReadonlySignedAccounts = byteArray.shift() as number;
     const numReadonlyUnsignedAccounts = byteArray.shift() as number;
 

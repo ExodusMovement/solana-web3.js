@@ -11,13 +11,11 @@ import {
 import {PublicKey, PUBLIC_KEY_LENGTH} from '../publickey';
 import * as shortvec from '../util/shortvec-encoding';
 import assert from '../util/assert';
-import {TransactionInstruction} from '../transaction';
+import {TransactionInstruction, PACKET_DATA_SIZE} from '../transaction';
 import {AddressLookupTableAccount} from './address-lookup-table';
 import {CompiledKeys} from './compiled-keys';
 import {AccountKeysFromLookups, MessageAccountKeys} from './account-keys';
 
-
-const PACKET_DATA_SIZE = 1280 - 40 - 8;
 
 const VERSION_PREFIX_MASK = 0x7f;
 

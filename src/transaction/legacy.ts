@@ -2,14 +2,15 @@ import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 
-import {Message} from './message/legacy';
-import {PublicKey} from './publickey';
-import * as shortvec from './util/shortvec-encoding';
-import {toBuffer} from './util/to-buffer';
-import invariant from './util/assert';
-import type {Signer} from './keypair';
-import type {Blockhash} from './blockhash';
-import type {CompiledInstruction} from './message/legacy';
+import {Message} from '../message/legacy';
+import {PublicKey} from '../publickey';
+import * as shortvec from '../util/shortvec-encoding';
+import {toBuffer} from '../util/to-buffer';
+import invariant from '../util/assert';
+import { PACKET_DATA_SIZE } from './constants'
+import type {Signer} from '../keypair';
+import type {Blockhash} from '../blockhash';
+import type {CompiledInstruction} from '../message/legacy';
 
 /**
  * Transaction signature as base-58 encoded string
@@ -22,15 +23,6 @@ export type TransactionSignature = string;
  * Signatures are 64 bytes in length
  */
 const DEFAULT_SIGNATURE = Buffer.alloc(64).fill(0);
-
-/**
- * Maximum over-the-wire size of a Transaction
- *
- * 1280 is IPv6 minimum MTU
- * 40 bytes is the size of the IPv6 header
- * 8 bytes is the size of the fragment header
- */
-export const PACKET_DATA_SIZE = 1280 - 40 - 8;
 
 const SIGNATURE_LENGTH = 64;
 

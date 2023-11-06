@@ -1,12 +1,12 @@
 import * as BufferLayout from '@solana/buffer-layout';
 import nacl from 'tweetnacl';
 
-import {Signer} from './keypair';
-import assert from './util/assert';
-import {VersionedMessage} from './message/versioned';
-import * as shortvec from './util/shortvec-encoding';
-import * as Layout from './layout';
-import {PublicKey} from './publickey';
+import {Signer} from '../keypair';
+import assert from '../util/assert';
+import {IVersionedMessage, VersionedMessage} from '../message/versioned';
+import * as shortvec from '../util/shortvec-encoding';
+import * as Layout from '../layout';
+import {PublicKey} from '../publickey';
 
 const SIGNATURE_LENGTH_IN_BYTES = 64;
 
@@ -17,13 +17,13 @@ export type TransactionVersion = 'legacy' | 0;
  */
 export class VersionedTransaction {
   signatures: Array<Uint8Array>;
-  message: VersionedMessage;
+  message: IVersionedMessage;
 
   get version(): TransactionVersion {
     return this.message.version;
   }
 
-  constructor(message: VersionedMessage, signatures?: Array<Uint8Array>) {
+  constructor(message: IVersionedMessage, signatures?: Array<Uint8Array>) {
     if (signatures !== undefined) {
       assert(
         signatures.length === message.header.numRequiredSignatures,
