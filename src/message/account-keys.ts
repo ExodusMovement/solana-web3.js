@@ -3,9 +3,9 @@ import {TransactionInstruction} from '../transaction';
 import {MessageCompiledInstruction} from './index';
 
 export type AccountKeysFromLookups = {
-    writable: Array<PublicKey>;
-    readonly: Array<PublicKey>;
-};;
+  writable: Array<PublicKey>;
+  readonly: Array<PublicKey>;
+};
 
 export class MessageAccountKeys {
   staticAccountKeys: Array<PublicKey>;

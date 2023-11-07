@@ -46,22 +46,13 @@ export class VersionedTransaction {
     const encodedSignaturesLength = Array<number>();
     shortvec.encodeLength(encodedSignaturesLength, this.signatures.length);
 
-    const transactionLayout = <{
+    const transactionLayout = <
+      {
         encodedSignaturesLength: Uint8Array;
         signatures: Array<Uint8Array>;
         serializedMessage: Uint8Array;
-      } & BufferLayout.Structure>BufferLayout.struct([
-      BufferLayout.blob(
-        encodedSignaturesLength.length,
-        'encodedSignaturesLength',
-      ),
-      BufferLayout.seq(
-        Layout.signature(),
-        this.signatures.length,
-        'signatures',
-      ),
-      BufferLayout.blob(serializedMessage.length, 'serializedMessage'),
-    ]);
+      } & BufferLayout.Structure
+    >BufferLayout.struct([BufferLayout.blob(encodedSignaturesLength.length, 'encodedSignaturesLength'), BufferLayout.seq(Layout.signature(), this.signatures.length, 'signatures'), BufferLayout.blob(serializedMessage.length, 'serializedMessage')]);
 
     const serializedTransaction = new Uint8Array(2048);
     const serializedTransactionLength = transactionLayout.encode(
@@ -105,7 +96,10 @@ export class VersionedTransaction {
         signerIndex >= 0,
         `Cannot sign with non signer key ${signer.publicKey.toBase58()}`,
       );
-      this.signatures[signerIndex] = nacl.sign.detached(messageData, signer.secretKey);
+      this.signatures[signerIndex] = nacl.sign.detached(
+        messageData,
+        signer.secretKey,
+      );
     }
   }
 

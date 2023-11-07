@@ -7,7 +7,7 @@ import {PublicKey} from '../publickey';
 import * as shortvec from '../util/shortvec-encoding';
 import {toBuffer} from '../util/to-buffer';
 import invariant from '../util/assert';
-import { PACKET_DATA_SIZE } from './constants'
+import {PACKET_DATA_SIZE} from './constants';
 import type {Signer} from '../keypair';
 import type {Blockhash} from '../blockhash';
 import type {CompiledInstruction} from '../message/legacy';
@@ -222,23 +222,23 @@ export class Transaction {
   /**
    * @internal
    */
-    toJSON(): TransactionJSON {
-      return {
-        recentBlockhash: this.recentBlockhash || null,
-        feePayer: this.feePayer ? this.feePayer.toJSON() : null,
-        nonceInfo: this.nonceInfo
-          ? {
-              nonce: this.nonceInfo.nonce,
-              nonceInstruction: this.nonceInfo.nonceInstruction.toJSON(),
-            }
-          : null,
-        instructions: this.instructions.map(instruction => instruction.toJSON()),
-        signers: this.signatures.map(({publicKey}) => {
-          return publicKey.toJSON();
-        }),
-      };
-    }
-  
+  toJSON(): TransactionJSON {
+    return {
+      recentBlockhash: this.recentBlockhash || null,
+      feePayer: this.feePayer ? this.feePayer.toJSON() : null,
+      nonceInfo: this.nonceInfo
+        ? {
+          nonce: this.nonceInfo.nonce,
+          nonceInstruction: this.nonceInfo.nonceInstruction.toJSON(),
+        }
+        : null,
+      instructions: this.instructions.map(instruction => instruction.toJSON()),
+      signers: this.signatures.map(({publicKey}) => {
+        return publicKey.toJSON();
+      }),
+    };
+  }
+
   /**
    * Add one or more instructions to this Transaction
    */

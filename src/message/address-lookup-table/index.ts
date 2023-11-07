@@ -1,4 +1,5 @@
-import BN from 'bn.js';import * as BufferLayout from '@solana/buffer-layout';
+import BN from 'bn.js';
+import * as BufferLayout from '@solana/buffer-layout';
 
 import * as Layout from '../../layout';
 import {PublicKey} from '../../publickey';
@@ -85,7 +86,10 @@ type LookupTableInstructionInputData = {
 export const LOOKUP_TABLE_INSTRUCTION_LAYOUTS = Object.freeze({
   CreateLookupTable: {
     index: 0,
-    layout: <LookupTableInstructionInputData['CreateLookupTable'] & BufferLayout.Structure>BufferLayout.struct([
+    layout: <
+      LookupTableInstructionInputData['CreateLookupTable'] &
+        BufferLayout.Structure
+    >BufferLayout.struct([
       BufferLayout.u32('instruction'),
       BufferLayout.nu64('recentSlot'), // TODO: bigint
       BufferLayout.u8('bumpSeed'),
@@ -93,11 +97,17 @@ export const LOOKUP_TABLE_INSTRUCTION_LAYOUTS = Object.freeze({
   },
   FreezeLookupTable: {
     index: 1,
-    layout: <LookupTableInstructionInputData['FreezeLookupTable'] & BufferLayout.Structure>BufferLayout.struct([BufferLayout.u32('instruction')]),
+    layout: <
+      LookupTableInstructionInputData['FreezeLookupTable'] &
+        BufferLayout.Structure
+    >BufferLayout.struct([BufferLayout.u32('instruction')]),
   },
   ExtendLookupTable: {
     index: 2,
-    layout: <LookupTableInstructionInputData['ExtendLookupTable'] & BufferLayout.Structure>BufferLayout.struct([
+    layout: <
+      LookupTableInstructionInputData['ExtendLookupTable'] &
+        BufferLayout.Structure
+    >BufferLayout.struct([
       BufferLayout.u32('instruction'),
       BufferLayout.nu64(), // TODO: bigint
       BufferLayout.seq(
@@ -109,11 +119,17 @@ export const LOOKUP_TABLE_INSTRUCTION_LAYOUTS = Object.freeze({
   },
   DeactivateLookupTable: {
     index: 3,
-    layout: <LookupTableInstructionInputData['DeactivateLookupTable'] & BufferLayout.Structure>BufferLayout.struct([BufferLayout.u32('instruction')]),
+    layout: <
+      LookupTableInstructionInputData['DeactivateLookupTable'] &
+        BufferLayout.Structure
+    >BufferLayout.struct([BufferLayout.u32('instruction')]),
   },
   CloseLookupTable: {
     index: 4,
-    layout: <LookupTableInstructionInputData['CloseLookupTable'] & BufferLayout.Structure>BufferLayout.struct([BufferLayout.u32('instruction')]),
+    layout: <
+      LookupTableInstructionInputData['CloseLookupTable'] &
+        BufferLayout.Structure
+    >BufferLayout.struct([BufferLayout.u32('instruction')]),
   },
 });
 
@@ -176,9 +192,11 @@ export class AddressLookupTableInstruction {
       );
     }
 
-    const {addresses} = <{ addresses: Buffer[] }>decodeData(
-      LOOKUP_TABLE_INSTRUCTION_LAYOUTS.ExtendLookupTable,
-      instruction.data,
+    const {addresses} = <{addresses: Buffer[]}>(
+      decodeData(
+        LOOKUP_TABLE_INSTRUCTION_LAYOUTS.ExtendLookupTable,
+        instruction.data,
+      )
     );
     return {
       lookupTable: instruction.keys[0].pubkey,
@@ -260,7 +278,10 @@ export class AddressLookupTableProgram {
 
   static createLookupTable(params: CreateLookupTableParams) {
     const [lookupTableAddress, bumpSeed] = PublicKey.findProgramAddressSync(
-      [params.authority.toBuffer(), new BN(params.recentSlot).toBuffer("le", 8)],
+      [
+        params.authority.toBuffer(),
+        new BN(params.recentSlot).toBuffer('le', 8),
+      ],
       this.programId,
     );
 

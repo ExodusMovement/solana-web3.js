@@ -16,7 +16,6 @@ import {AddressLookupTableAccount} from './address-lookup-table';
 import {CompiledKeys} from './compiled-keys';
 import {AccountKeysFromLookups, MessageAccountKeys} from './account-keys';
 
-
 const VERSION_PREFIX_MASK = 0x7f;
 
 /**
@@ -243,50 +242,19 @@ export class MessageV0 {
       this.addressTableLookups.length,
     );
 
-    const messageLayout = <{
-      prefix: number;
-      header: MessageHeader;
-      staticAccountKeysLength: Uint8Array;
-      staticAccountKeys: Array<Uint8Array>;
-      recentBlockhash: Uint8Array;
-      instructionsLength: Uint8Array;
-      serializedInstructions: Uint8Array;
-      addressTableLookupsLength: Uint8Array;
-      serializedAddressTableLookups: Uint8Array;
-    } & BufferLayout.Structure>BufferLayout.struct([
-      BufferLayout.u8('prefix'),
-      BufferLayout.struct(
-        [
-          BufferLayout.u8('numRequiredSignatures'),
-          BufferLayout.u8('numReadonlySignedAccounts'),
-          BufferLayout.u8('numReadonlyUnsignedAccounts'),
-        ],
-        'header',
-      ),
-      BufferLayout.blob(
-        encodedStaticAccountKeysLength.length,
-        'staticAccountKeysLength',
-      ),
-      BufferLayout.seq(
-        Layout.publicKey(),
-        this.staticAccountKeys.length,
-        'staticAccountKeys',
-      ),
-      Layout.publicKey('recentBlockhash'),
-      BufferLayout.blob(encodedInstructionsLength.length, 'instructionsLength'),
-      BufferLayout.blob(
-        serializedInstructions.length,
-        'serializedInstructions',
-      ),
-      BufferLayout.blob(
-        encodedAddressTableLookupsLength.length,
-        'addressTableLookupsLength',
-      ),
-      BufferLayout.blob(
-        serializedAddressTableLookups.length,
-        'serializedAddressTableLookups',
-      ),
-    ]);
+    const messageLayout = <
+      {
+        prefix: number;
+        header: MessageHeader;
+        staticAccountKeysLength: Uint8Array;
+        staticAccountKeys: Array<Uint8Array>;
+        recentBlockhash: Uint8Array;
+        instructionsLength: Uint8Array;
+        serializedInstructions: Uint8Array;
+        addressTableLookupsLength: Uint8Array;
+        serializedAddressTableLookups: Uint8Array;
+      } & BufferLayout.Structure
+    >BufferLayout.struct([BufferLayout.u8('prefix'), BufferLayout.struct([BufferLayout.u8('numRequiredSignatures'), BufferLayout.u8('numReadonlySignedAccounts'), BufferLayout.u8('numReadonlyUnsignedAccounts')], 'header'), BufferLayout.blob(encodedStaticAccountKeysLength.length, 'staticAccountKeysLength'), BufferLayout.seq(Layout.publicKey(), this.staticAccountKeys.length, 'staticAccountKeys'), Layout.publicKey('recentBlockhash'), BufferLayout.blob(encodedInstructionsLength.length, 'instructionsLength'), BufferLayout.blob(serializedInstructions.length, 'serializedInstructions'), BufferLayout.blob(encodedAddressTableLookupsLength.length, 'addressTableLookupsLength'), BufferLayout.blob(serializedAddressTableLookups.length, 'serializedAddressTableLookups')]);
 
     const serializedMessage = new Uint8Array(PACKET_DATA_SIZE);
     const MESSAGE_VERSION_0_PREFIX = 1 << 7;
@@ -322,26 +290,15 @@ export class MessageV0 {
       const encodedDataLength = Array<number>();
       shortvec.encodeLength(encodedDataLength, instruction.data.length);
 
-      const instructionLayout = <{
-        programIdIndex: number;
-        encodedAccountKeyIndexesLength: Uint8Array;
-        accountKeyIndexes: number[];
-        encodedDataLength: Uint8Array;
-        data: Uint8Array;
-      }& BufferLayout.Structure>BufferLayout.struct([
-        BufferLayout.u8('programIdIndex'),
-        BufferLayout.blob(
-          encodedAccountKeyIndexesLength.length,
-          'encodedAccountKeyIndexesLength',
-        ),
-        BufferLayout.seq(
-          BufferLayout.u8(),
-          instruction.accountKeyIndexes.length,
-          'accountKeyIndexes',
-        ),
-        BufferLayout.blob(encodedDataLength.length, 'encodedDataLength'),
-        BufferLayout.blob(instruction.data.length, 'data'),
-      ]);
+      const instructionLayout = <
+        {
+          programIdIndex: number;
+          encodedAccountKeyIndexesLength: Uint8Array;
+          accountKeyIndexes: number[];
+          encodedDataLength: Uint8Array;
+          data: Uint8Array;
+        } & BufferLayout.Structure
+      >BufferLayout.struct([BufferLayout.u8('programIdIndex'), BufferLayout.blob(encodedAccountKeyIndexesLength.length, 'encodedAccountKeyIndexesLength'), BufferLayout.seq(BufferLayout.u8(), instruction.accountKeyIndexes.length, 'accountKeyIndexes'), BufferLayout.blob(encodedDataLength.length, 'encodedDataLength'), BufferLayout.blob(instruction.data.length, 'data')]);
 
       serializedLength += instructionLayout.encode(
         {
@@ -377,33 +334,15 @@ export class MessageV0 {
         lookup.readonlyIndexes.length,
       );
 
-      const addressTableLookupLayout = <{
-        accountKey: Uint8Array;
-        encodedWritableIndexesLength: Uint8Array;
-        writableIndexes: number[];
-        encodedReadonlyIndexesLength: Uint8Array;
-        readonlyIndexes: number[];
-      }& BufferLayout.Structure>BufferLayout.struct([
-        Layout.publicKey('accountKey'),
-        BufferLayout.blob(
-          encodedWritableIndexesLength.length,
-          'encodedWritableIndexesLength',
-        ),
-        BufferLayout.seq(
-          BufferLayout.u8(),
-          lookup.writableIndexes.length,
-          'writableIndexes',
-        ),
-        BufferLayout.blob(
-          encodedReadonlyIndexesLength.length,
-          'encodedReadonlyIndexesLength',
-        ),
-        BufferLayout.seq(
-          BufferLayout.u8(),
-          lookup.readonlyIndexes.length,
-          'readonlyIndexes',
-        ),
-      ]);
+      const addressTableLookupLayout = <
+        {
+          accountKey: Uint8Array;
+          encodedWritableIndexesLength: Uint8Array;
+          writableIndexes: number[];
+          encodedReadonlyIndexesLength: Uint8Array;
+          readonlyIndexes: number[];
+        } & BufferLayout.Structure
+      >BufferLayout.struct([Layout.publicKey('accountKey'), BufferLayout.blob(encodedWritableIndexesLength.length, 'encodedWritableIndexesLength'), BufferLayout.seq(BufferLayout.u8(), lookup.writableIndexes.length, 'writableIndexes'), BufferLayout.blob(encodedReadonlyIndexesLength.length, 'encodedReadonlyIndexesLength'), BufferLayout.seq(BufferLayout.u8(), lookup.readonlyIndexes.length, 'readonlyIndexes')]);
 
       serializedLength += addressTableLookupLayout.encode(
         {

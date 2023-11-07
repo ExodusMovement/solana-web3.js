@@ -50,10 +50,10 @@ export class CompiledKeys {
       for (const accountMeta of ix.keys) {
         const keyMeta = getOrInsertDefault(accountMeta.pubkey);
         if (!keyMeta.isSigner) {
-            keyMeta.isSigner = accountMeta.isSigner;
+          keyMeta.isSigner = accountMeta.isSigner;
         }
         if (!keyMeta.isWritable) {
-            keyMeta.isWritable = accountMeta.isWritable;
+          keyMeta.isWritable = accountMeta.isWritable;
         }
       }
     }

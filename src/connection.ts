@@ -2073,9 +2073,9 @@ export class Connection {
     commitmentOrConfig?: Commitment | ConnectionConfig,
   ) {
     let url = new URL(endpoint);
-    if(!endpoint.startsWith('https://')){
-        throw new Error(`unsupported URL: ${endpoint}`);
-    };
+    if (!endpoint.startsWith('https://')) {
+      throw new Error(`unsupported URL: ${endpoint}`);
+    }
     const useHttps = true; //url.protocol === 'https:';
 
     let wsEndpoint;

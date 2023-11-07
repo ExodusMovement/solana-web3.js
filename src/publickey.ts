@@ -79,11 +79,11 @@ export class PublicKey extends Struct {
   /**
    * Returns a unique PublicKey for tests and benchmarks using acounter
    */
-    static unique(): PublicKey {
-      const key = new PublicKey(uniquePublicKeyCounter);
-      uniquePublicKeyCounter += 1;
-      return new PublicKey(key.toBuffer());
-    }
+  static unique(): PublicKey {
+    const key = new PublicKey(uniquePublicKeyCounter);
+    uniquePublicKeyCounter += 1;
+    return new PublicKey(key.toBuffer());
+  }
 
   /**
    * Default public key value. (All zeros)
@@ -107,7 +107,7 @@ export class PublicKey extends Struct {
   toJSON(): string {
     return this.toBase58();
   }
-  
+
   /**
    * Return the byte array representation of the public key
    */
@@ -192,7 +192,7 @@ export class PublicKey extends Struct {
     seeds: Array<Buffer | Uint8Array>,
     programId: PublicKey,
   ): Promise<PublicKey> {
-    return this.createProgramAddressSync(seeds, programId)
+    return this.createProgramAddressSync(seeds, programId);
   }
 
   /**
@@ -202,27 +202,27 @@ export class PublicKey extends Struct {
    * iterates a nonce until it finds one that when combined with the seeds
    * results in a valid program address.
    */
-    static findProgramAddressSync(
-      seeds: Array<Buffer | Uint8Array>,
-      programId: PublicKey,
-    ): [PublicKey, number] {
-      let nonce = 255;
-      let address;
-      while (nonce != 0) {
-        try {
-          const seedsWithNonce = seeds.concat(Buffer.from([nonce]));
-          address = this.createProgramAddressSync(seedsWithNonce, programId);
-        } catch (err) {
-          if (err instanceof TypeError) {
-            throw err;
-          }
-          nonce--;
-          continue;
+  static findProgramAddressSync(
+    seeds: Array<Buffer | Uint8Array>,
+    programId: PublicKey,
+  ): [PublicKey, number] {
+    let nonce = 255;
+    let address;
+    while (nonce != 0) {
+      try {
+        const seedsWithNonce = seeds.concat(Buffer.from([nonce]));
+        address = this.createProgramAddressSync(seedsWithNonce, programId);
+      } catch (err) {
+        if (err instanceof TypeError) {
+          throw err;
         }
-        return [address, nonce];
+        nonce--;
+        continue;
       }
-      throw new Error(`Unable to find a viable program address nonce`);
+      return [address, nonce];
     }
+    throw new Error(`Unable to find a viable program address nonce`);
+  }
 
   /**
    * Find a valid program address

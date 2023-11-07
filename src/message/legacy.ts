@@ -5,10 +5,18 @@ import * as BufferLayout from '@solana/buffer-layout';
 import {PublicKey} from '../publickey';
 import type {Blockhash} from '../blockhash';
 import * as Layout from '../layout';
-import {PACKET_DATA_SIZE, TransactionInstruction, VERSION_PREFIX_MASK} from '../transaction';
+import {
+  PACKET_DATA_SIZE,
+  TransactionInstruction,
+  VERSION_PREFIX_MASK,
+} from '../transaction';
 import * as shortvec from '../util/shortvec-encoding';
 import {toBuffer} from '../util/to-buffer';
-import { MessageHeader, MessageAddressTableLookup, MessageCompiledInstruction, } from './index'
+import {
+  MessageHeader,
+  MessageAddressTableLookup,
+  MessageCompiledInstruction,
+} from './index';
 import {CompiledKeys} from './compiled-keys';
 import {MessageAccountKeys} from './account-keys';
 
@@ -254,7 +262,6 @@ export class Message {
       );
     }
 
-    
     const numReadonlySignedAccounts = byteArray.shift() as number;
     const numReadonlyUnsignedAccounts = byteArray.shift() as number;
 
