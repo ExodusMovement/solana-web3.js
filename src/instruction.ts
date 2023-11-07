@@ -3,6 +3,10 @@ import * as BufferLayout from '@solana/buffer-layout';
 
 import * as Layout from './layout';
 
+export interface IInstructionInputData {
+  readonly instruction: number;
+}
+
 /**
  * @internal
  */

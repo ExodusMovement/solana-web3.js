@@ -1,5 +1,6 @@
 import {Buffer} from 'buffer';
 import {keccak_256} from 'js-sha3';
+// @ts-ignore
 import {privateKeyVerify, ecdsaSign, publicKeyCreate} from 'secp256k1';
 
 import {
