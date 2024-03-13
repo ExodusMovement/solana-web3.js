@@ -1,6 +1,4 @@
-/* eslint-disable require-await, @typescript-eslint/no-unused-vars */
-
-import RpcClient from 'jayson/lib/client/browser';
+/* eslint-disable no-dupe-class-members */
 
 import {EpochSchedule} from './epoch-schedule';
 import fetchImpl from './fetch-impl';
@@ -26,21 +24,6 @@ import type {CompiledInstruction} from './message';
 export const BLOCKHASH_CACHE_TIMEOUT_MS = 30 * 1000;
 
 type ClientSubscriptionId = number;
-
-/**
- * @internal
- * This type represents a single subscribable 'topic.' It's made up of:
- *
- * - The args used to open the subscription with the server,
- * - The state of the subscription, in terms of its connectedness, and
- * - The set of callbacks to call when the server publishes notifications
- *
- * This record gets indexed by `SubscriptionConfigHash` and is used to
- * set up subscriptions, fan out notifications, and track subscription state.
- */
-type RpcRequest = (methodName: string, args: Array<any>) => Promise<any>;
-
-type RpcBatchRequest = (requests: RpcParams[]) => Promise<any[]>;
 
 /**
  * @internal
@@ -1357,36 +1340,8 @@ export type ConnectionConfig = {
 /**
  * A connection to a fullnode JSON RPC endpoint
  */
-export class Connection {
-  /** @internal */ _commitment?: Commitment;
-  /** @internal */ _confirmTransactionInitialTimeout?: number;
+export declare class Connection {
   /** @internal */ _rpcEndpoint: string;
-  /** @internal */ _rpcWsEndpoint: string;
-  /** @internal */ _rpcClient: RpcClient;
-  /** @internal */ _rpcRequest: RpcRequest;
-  /** @internal */ _rpcBatchRequest: RpcBatchRequest;
-  // /** @internal */ _rpcWebSocket: RpcWebSocketClient;
-  /** @internal */ _rpcWebSocketConnected: boolean = false;
-  /** @internal */ _rpcWebSocketHeartbeat: ReturnType<
-    typeof setInterval
-  > | null = null;
-  /** @internal */ _rpcWebSocketIdleTimeout: ReturnType<
-    typeof setTimeout
-  > | null = null;
-
-  /** @internal */ _disableBlockhashCaching: boolean = false;
-  /** @internal */ _pollingBlockhash: boolean = false;
-  /** @internal */ _blockhashInfo: {
-    latestBlockhash: BlockhashWithExpiryBlockHeight | null;
-    lastFetch: number;
-    simulatedSignatures: Array<string>;
-    transactionSignatures: Array<string>;
-  } = {
-    latestBlockhash: null,
-    lastFetch: 0,
-    transactionSignatures: [],
-    simulatedSignatures: [],
-  };
 
   /**
    * Establish a JSON RPC connection
@@ -1397,230 +1352,175 @@ export class Connection {
   constructor(
     _endpoint: string,
     _commitmentOrConfig?: Commitment | ConnectionConfig,
-  ) {
-    throw new Error('Not implemented');
-  }
-
+  );
   /**
    * The default commitment used for requests
    */
-  get commitment(): Commitment | undefined {
-    return this._commitment;
-  }
-
+  get commitment(): Commitment | undefined;
   /**
    * The RPC endpoint
    */
-  get rpcEndpoint(): string {
-    return this._rpcEndpoint;
-  }
-
+  get rpcEndpoint(): string;
   /**
    * Fetch the balance for the specified public key, return with context
    */
-  async getBalanceAndContext(
+  getBalanceAndContext(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetBalanceConfig,
-  ): Promise<RpcResponseAndContext<number>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<number>>;
   /**
    * Fetch the balance for the specified public key
    */
-  async getBalance(
+  getBalance(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetBalanceConfig,
-  ): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<number>;
   /**
    * Fetch the estimated production time of a block
    */
-  async getBlockTime(_slot: number): Promise<number | null> {
-    throw new Error('Not implemented');
-  }
-
+  getBlockTime(_slot: number): Promise<number | null>;
   /**
    * Fetch the lowest slot that the node has information about in its ledger.
    * This value may increase over time if the node is configured to purge older ledger data
    */
-  async getMinimumLedgerSlot(): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  getMinimumLedgerSlot(): Promise<number>;
   /**
    * Fetch the slot of the lowest confirmed block that has not been purged from the ledger
    */
-  async getFirstAvailableBlock(): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  getFirstAvailableBlock(): Promise<number>;
   /**
    * Fetch information about the current supply
    */
-  async getSupply(
+  getSupply(
     _config?: GetSupplyConfig | Commitment,
-  ): Promise<RpcResponseAndContext<Supply>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<Supply>>;
   /**
    * Fetch the current supply of a token mint
    */
-  async getTokenSupply(
+  getTokenSupply(
     _tokenMintAddress: PublicKey,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<TokenAmount>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<TokenAmount>>;
   /**
    * Fetch the current balance of a token account
    */
-  async getTokenAccountBalance(
+  getTokenAccountBalance(
     _tokenAddress: PublicKey,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<TokenAmount>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<TokenAmount>>;
   /**
    * Fetch all the token accounts owned by the specified account
    *
    * @return {Promise<RpcResponseAndContext<Array<{pubkey: PublicKey, account: AccountInfo<Buffer>}>>>}
    */
-  async getTokenAccountsByOwner(
+  getTokenAccountsByOwner(
     _ownerAddress: PublicKey,
     _filter: TokenAccountsFilter,
     _commitmentOrConfig?: Commitment | GetTokenAccountsByOwnerConfig,
   ): Promise<
     RpcResponseAndContext<
-      Array<{pubkey: PublicKey; account: AccountInfo<Buffer>}>
+      Array<{
+        pubkey: PublicKey;
+        account: AccountInfo<Buffer>;
+      }>
     >
-  > {
-    throw new Error('Not implemented');
-  }
-
+  >;
   /**
    * Fetch parsed token accounts owned by the specified account
    *
    * @return {Promise<RpcResponseAndContext<Array<{pubkey: PublicKey, account: AccountInfo<ParsedAccountData>}>>>}
    */
-  async getParsedTokenAccountsByOwner(
+  getParsedTokenAccountsByOwner(
     _ownerAddress: PublicKey,
     _filter: TokenAccountsFilter,
     _commitment?: Commitment,
   ): Promise<
     RpcResponseAndContext<
-      Array<{pubkey: PublicKey; account: AccountInfo<ParsedAccountData>}>
+      Array<{
+        pubkey: PublicKey;
+        account: AccountInfo<ParsedAccountData>;
+      }>
     >
-  > {
-    throw new Error('Not implemented');
-  }
-
+  >;
   /**
    * Fetch the 20 largest accounts with their current balances
    */
-  async getLargestAccounts(
+  getLargestAccounts(
     _config?: GetLargestAccountsConfig,
-  ): Promise<RpcResponseAndContext<Array<AccountBalancePair>>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<Array<AccountBalancePair>>>;
   /**
    * Fetch the 20 largest token accounts with their current balances
    * for a given mint.
    */
-  async getTokenLargestAccounts(
+  getTokenLargestAccounts(
     _mintAddress: PublicKey,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<Array<TokenAccountBalancePair>>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<Array<TokenAccountBalancePair>>>;
   /**
    * Fetch all the account info for the specified public key, return with context
    */
-  async getAccountInfoAndContext(
+  getAccountInfoAndContext(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetAccountInfoConfig,
-  ): Promise<RpcResponseAndContext<AccountInfo<Buffer> | null>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<AccountInfo<Buffer> | null>>;
   /**
    * Fetch parsed account info for the specified public key
    */
-  async getParsedAccountInfo(
+  getParsedAccountInfo(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetAccountInfoConfig,
   ): Promise<
     RpcResponseAndContext<AccountInfo<Buffer | ParsedAccountData> | null>
-  > {
-    throw new Error('Not implemented');
-  }
-
+  >;
   /**
    * Fetch all the account info for the specified public key
    */
-  async getAccountInfo(
+  getAccountInfo(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetAccountInfoConfig,
-  ): Promise<AccountInfo<Buffer> | null> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<AccountInfo<Buffer> | null>;
   /**
    * Fetch all the account info for multiple accounts specified by an array of public keys, return with context
    */
-  async getMultipleAccountsInfoAndContext(
+  getMultipleAccountsInfoAndContext(
     _publicKeys: PublicKey[],
     _commitmentOrConfig?: Commitment | GetMultipleAccountsConfig,
-  ): Promise<RpcResponseAndContext<(AccountInfo<Buffer> | null)[]>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<(AccountInfo<Buffer> | null)[]>>;
   /**
    * Fetch all the account info for multiple accounts specified by an array of public keys
    */
-  async getMultipleAccountsInfo(
+  getMultipleAccountsInfo(
     _publicKeys: PublicKey[],
     _commitmentOrConfig?: Commitment | GetMultipleAccountsConfig,
-  ): Promise<(AccountInfo<Buffer> | null)[]> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<(AccountInfo<Buffer> | null)[]>;
   /**
    * Returns epoch activation information for a stake account that has been delegated
    */
-  async getStakeActivation(
+  getStakeActivation(
     _publicKey: PublicKey,
     _commitmentOrConfig?: Commitment | GetStakeActivationConfig,
     _epoch?: number,
-  ): Promise<StakeActivationData> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<StakeActivationData>;
   /**
    * Fetch all the accounts owned by the specified program id
    *
    * @return {Promise<Array<{pubkey: PublicKey, account: AccountInfo<Buffer>}>>}
    */
-  async getProgramAccounts(
+  getProgramAccounts(
     _programId: PublicKey,
     _configOrCommitment?: GetProgramAccountsConfig | Commitment,
-  ): Promise<Array<{pubkey: PublicKey; account: AccountInfo<Buffer>}>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<
+    Array<{
+      pubkey: PublicKey;
+      account: AccountInfo<Buffer>;
+    }>
+  >;
   /**
    * Fetch and parse all the accounts owned by the specified program id
    *
    * @return {Promise<Array<{pubkey: PublicKey, account: AccountInfo<Buffer | ParsedAccountData>}>>}
    */
-  async getParsedProgramAccounts(
+  getParsedProgramAccounts(
     _programId: PublicKey,
     _configOrCommitment?: GetParsedProgramAccountsConfig | Commitment,
   ): Promise<
@@ -1628,311 +1528,190 @@ export class Connection {
       pubkey: PublicKey;
       account: AccountInfo<Buffer | ParsedAccountData>;
     }>
-  > {
-    throw new Error('Not implemented');
-  }
-
+  >;
   confirmTransaction(
     _strategy: BlockheightBasedTransactionConfirmationStrategy,
     _commitment?: Commitment,
   ): Promise<RpcResponseAndContext<SignatureResult>>;
-
   /** @deprecated Instead, call `confirmTransaction` using a `TransactionConfirmationConfig` */
-  // eslint-disable-next-line no-dupe-class-members
   confirmTransaction(
     _strategy: TransactionSignature,
     _commitment?: Commitment,
   ): Promise<RpcResponseAndContext<SignatureResult>>;
-
-  // eslint-disable-next-line no-dupe-class-members
-  async confirmTransaction(
-    _strategy:
-      | BlockheightBasedTransactionConfirmationStrategy
-      | TransactionSignature,
-    _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<SignatureResult>> {
-    throw new Error('Not implemented');
-  }
-
   /**
    * Return the list of nodes that are currently participating in the cluster
    */
-  async getClusterNodes(): Promise<Array<ContactInfo>> {
-    throw new Error('Not implemented');
-  }
-
+  getClusterNodes(): Promise<Array<ContactInfo>>;
   /**
    * Return the list of nodes that are currently participating in the cluster
    */
-  async getVoteAccounts(_commitment?: Commitment): Promise<VoteAccountStatus> {
-    throw new Error('Not implemented');
-  }
-
+  getVoteAccounts(_commitment?: Commitment): Promise<VoteAccountStatus>;
   /**
    * Fetch the current slot that the node is processing
    */
-  async getSlot(
-    _commitmentOrConfig?: Commitment | GetSlotConfig,
-  ): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  getSlot(_commitmentOrConfig?: Commitment | GetSlotConfig): Promise<number>;
   /**
    * Fetch the current slot leader of the cluster
    */
-  async getSlotLeader(
+  getSlotLeader(
     _commitmentOrConfig?: Commitment | GetSlotLeaderConfig,
-  ): Promise<string> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<string>;
   /**
    * Fetch `limit` number of slot leaders starting from `startSlot`
    *
    * @param startSlot fetch slot leaders starting from this slot
    * @param limit number of slot leaders to return
    */
-  async getSlotLeaders(
-    _startSlot: number,
-    _limit: number,
-  ): Promise<Array<PublicKey>> {
-    throw new Error('Not implemented');
-  }
-
+  getSlotLeaders(_startSlot: number, _limit: number): Promise<Array<PublicKey>>;
   /**
    * Fetch the current status of a signature
    */
-  async getSignatureStatus(
+  getSignatureStatus(
     _signature: TransactionSignature,
     _config?: SignatureStatusConfig,
-  ): Promise<RpcResponseAndContext<SignatureStatus | null>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<SignatureStatus | null>>;
   /**
    * Fetch the current statuses of a batch of signatures
    */
-  async getSignatureStatuses(
+  getSignatureStatuses(
     _signatures: Array<TransactionSignature>,
     _config?: SignatureStatusConfig,
-  ): Promise<RpcResponseAndContext<Array<SignatureStatus | null>>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<Array<SignatureStatus | null>>>;
   /**
    * Fetch the current transaction count of the cluster
    */
-  async getTransactionCount(
+  getTransactionCount(
     _commitmentOrConfig?: Commitment | GetTransactionCountConfig,
-  ): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<number>;
   /**
    * Fetch the current total currency supply of the cluster in lamports
    *
    * @deprecated Deprecated since v1.2.8. Please use {@link getSupply} instead.
    */
-  async getTotalSupply(_commitment?: Commitment): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  getTotalSupply(_commitment?: Commitment): Promise<number>;
   /**
    * Fetch the cluster InflationGovernor parameters
    */
-  async getInflationGovernor(
-    _commitment?: Commitment,
-  ): Promise<InflationGovernor> {
-    throw new Error('Not implemented');
-  }
-
+  getInflationGovernor(_commitment?: Commitment): Promise<InflationGovernor>;
   /**
    * Fetch the inflation reward for a list of addresses for an epoch
    */
-  async getInflationReward(
+  getInflationReward(
     _addresses: PublicKey[],
     _epoch?: number,
     _commitmentOrConfig?: Commitment | GetInflationRewardConfig,
-  ): Promise<(InflationReward | null)[]> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<(InflationReward | null)[]>;
   /**
    * Fetch the Epoch Info parameters
    */
-  async getEpochInfo(
+  getEpochInfo(
     _commitmentOrConfig?: Commitment | GetEpochInfoConfig,
-  ): Promise<EpochInfo> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<EpochInfo>;
   /**
    * Fetch the Epoch Schedule parameters
    */
-  async getEpochSchedule(): Promise<EpochSchedule> {
-    throw new Error('Not implemented');
-  }
-
+  getEpochSchedule(): Promise<EpochSchedule>;
   /**
    * Fetch the leader schedule for the current epoch
    * @return {Promise<RpcResponseAndContext<LeaderSchedule>>}
    */
-  async getLeaderSchedule(): Promise<LeaderSchedule> {
-    throw new Error('Not implemented');
-  }
-
+  getLeaderSchedule(): Promise<LeaderSchedule>;
   /**
    * Fetch the minimum balance needed to exempt an account of `dataLength`
    * size from rent
    */
-  async getMinimumBalanceForRentExemption(
+  getMinimumBalanceForRentExemption(
     _dataLength: number,
     _commitment?: Commitment,
-  ): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<number>;
   /**
    * Fetch a recent blockhash from the cluster, return with context
    * @return {Promise<RpcResponseAndContext<{blockhash: Blockhash, feeCalculator: FeeCalculator}>>}
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getLatestBlockhash} instead.
    */
-  async getRecentBlockhashAndContext(
-    _commitment?: Commitment,
-  ): Promise<
-    RpcResponseAndContext<{blockhash: Blockhash; feeCalculator: FeeCalculator}>
-  > {
-    throw new Error('Not implemented');
-  }
-
+  getRecentBlockhashAndContext(_commitment?: Commitment): Promise<
+    RpcResponseAndContext<{
+      blockhash: Blockhash;
+      feeCalculator: FeeCalculator;
+    }>
+  >;
   /**
    * Fetch recent performance samples
    * @return {Promise<Array<PerfSample>>}
    */
-  async getRecentPerformanceSamples(
-    _limit?: number,
-  ): Promise<Array<PerfSample>> {
-    throw new Error('Not implemented');
-  }
-
+  getRecentPerformanceSamples(_limit?: number): Promise<Array<PerfSample>>;
   /**
    * Fetch the fee calculator for a recent blockhash from the cluster, return with context
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getFeeForMessage} instead.
    */
-  async getFeeCalculatorForBlockhash(
+  getFeeCalculatorForBlockhash(
     _blockhash: Blockhash,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<FeeCalculator | null>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<FeeCalculator | null>>;
   /**
    * Fetch the fee for a message from the cluster, return with context
    */
-  async getFeeForMessage(
+  getFeeForMessage(
     _message: Message,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<number>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<number>>;
   /**
    * Fetch a recent blockhash from the cluster
    * @return {Promise<{blockhash: Blockhash, feeCalculator: FeeCalculator}>}
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getLatestBlockhash} instead.
    */
-  async getRecentBlockhash(
-    _commitment?: Commitment,
-  ): Promise<{blockhash: Blockhash; feeCalculator: FeeCalculator}> {
-    throw new Error('Not implemented');
-  }
-
+  getRecentBlockhash(_commitment?: Commitment): Promise<{
+    blockhash: Blockhash;
+    feeCalculator: FeeCalculator;
+  }>;
   /**
    * Fetch the latest blockhash from the cluster
    * @return {Promise<BlockhashWithExpiryBlockHeight>}
    */
-  async getLatestBlockhash(
+  getLatestBlockhash(
     _commitmentOrConfig?: Commitment | GetLatestBlockhashConfig,
-  ): Promise<BlockhashWithExpiryBlockHeight> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<BlockhashWithExpiryBlockHeight>;
   /**
    * Fetch the latest blockhash from the cluster
    * @return {Promise<BlockhashWithExpiryBlockHeight>}
    */
-  async getLatestBlockhashAndContext(
+  getLatestBlockhashAndContext(
     _commitmentOrConfig?: Commitment | GetLatestBlockhashConfig,
-  ): Promise<RpcResponseAndContext<BlockhashWithExpiryBlockHeight>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<BlockhashWithExpiryBlockHeight>>;
   /**
    * Fetch the node version
    */
-  async getVersion(): Promise<Version> {
-    throw new Error('Not implemented');
-  }
-
+  getVersion(): Promise<Version>;
   /**
    * Fetch the genesis hash
    */
-  async getGenesisHash(): Promise<string> {
-    throw new Error('Not implemented');
-  }
-
+  getGenesisHash(): Promise<string>;
   /**
    * Fetch a processed block from the cluster.
    *
    * @deprecated Instead, call `getBlock` using a `GetVersionedBlockConfig` by
    * setting the `maxSupportedTransactionVersion` property.
    */
-  async getBlock(
+  getBlock(
     _slot: number,
     _rawConfig?: GetBlockConfig,
   ): Promise<BlockResponse | null>;
-
   /**
    * Fetch a processed block from the cluster.
    */
-  // eslint-disable-next-line no-dupe-class-members
-  async getBlock(
+  getBlock(
     _slot: number,
     _rawConfig?: GetVersionedBlockConfig,
   ): Promise<VersionedBlockResponse | null>;
-
-  /**
-   * Fetch a processed block from the cluster.
-   */
-  // eslint-disable-next-line no-dupe-class-members
-  async getBlock(
-    _slot: number,
-    _rawConfig?: GetVersionedBlockConfig,
-  ): Promise<VersionedBlockResponse | null> {
-    throw new Error('Not implemented');
-  }
-
-  /*
-   * Returns the current block height of the node
-   */
-  async getBlockHeight(
+  getBlockHeight(
     _commitmentOrConfig?: Commitment | GetBlockHeightConfig,
-  ): Promise<number> {
-    throw new Error('Not implemented');
-  }
-
-  /*
-   * Returns recent block production information from the current or previous epoch
-   */
-  async getBlockProduction(
+  ): Promise<number>;
+  getBlockProduction(
     _configOrCommitment?: GetBlockProductionConfig | Commitment,
-  ): Promise<RpcResponseAndContext<BlockProduction>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<BlockProduction>>;
   /**
    * Fetch a confirmed or finalized transaction from the cluster.
    *
@@ -1940,51 +1719,31 @@ export class Connection {
    * `GetVersionedTransactionConfig` by setting the
    * `maxSupportedTransactionVersion` property.
    */
-  async getTransaction(
+  getTransaction(
     _signature: string,
     _rawConfig?: GetTransactionConfig,
   ): Promise<TransactionResponse | null>;
-
   /**
    * Fetch a confirmed or finalized transaction from the cluster.
    */
-  // eslint-disable-next-line no-dupe-class-members
-  async getTransaction(
+  getTransaction(
     _signature: string,
     _rawConfig: GetVersionedTransactionConfig,
   ): Promise<VersionedTransactionResponse | null>;
-
-  /**
-   * Fetch a confirmed or finalized transaction from the cluster.
-   */
-  // eslint-disable-next-line no-dupe-class-members
-  async getTransaction(
-    _signature: string,
-    _rawConfig?: GetVersionedTransactionConfig,
-  ): Promise<VersionedTransactionResponse | null> {
-    throw new Error('Not implemented');
-  }
-
   /**
    * Fetch parsed transaction details for a confirmed or finalized transaction
    */
-  async getParsedTransaction(
+  getParsedTransaction(
     _signature: TransactionSignature,
     _commitmentOrConfig?: GetVersionedTransactionConfig | Finality,
-  ): Promise<ParsedTransactionWithMeta | null> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<ParsedTransactionWithMeta | null>;
   /**
    * Fetch parsed transaction details for a batch of confirmed transactions
    */
-  async getParsedTransactions(
+  getParsedTransactions(
     _signatures: TransactionSignature[],
     _commitmentOrConfig?: GetVersionedTransactionConfig | Finality,
-  ): Promise<(ParsedTransactionWithMeta | null)[]> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<(ParsedTransactionWithMeta | null)[]>;
   /**
    * Fetch transaction details for a batch of confirmed transactions.
    * Similar to {@link getParsedTransactions} but returns a {@link TransactionResponse}.
@@ -1993,117 +1752,80 @@ export class Connection {
    * `GetVersionedTransactionConfig` by setting the
    * `maxSupportedTransactionVersion` property.
    */
-  async getTransactions(
+  getTransactions(
     _signatures: TransactionSignature[],
     _commitmentOrConfig?: GetTransactionConfig | Finality,
   ): Promise<(TransactionResponse | null)[]>;
-
   /**
    * Fetch transaction details for a batch of confirmed transactions.
    * Similar to {@link getParsedTransactions} but returns a {@link
    * VersionedTransactionResponse}.
    */
-  // eslint-disable-next-line no-dupe-class-members
-  async getTransactions(
+  getTransactions(
     _signatures: TransactionSignature[],
     _commitmentOrConfig: GetVersionedTransactionConfig | Finality,
   ): Promise<(VersionedTransactionResponse | null)[]>;
-
-  /**
-   * Fetch transaction details for a batch of confirmed transactions.
-   * Similar to {@link getParsedTransactions} but returns a {@link
-   * VersionedTransactionResponse}.
-   */
-  // eslint-disable-next-line no-dupe-class-members
-  async getTransactions(
-    _signatures: TransactionSignature[],
-    _commitmentOrConfig: GetVersionedTransactionConfig | Finality,
-  ): Promise<(VersionedTransactionResponse | null)[]> {
-    throw new Error('Not implemented');
-  }
-
   /**
    * Fetch a list of Transactions and transaction statuses from the cluster
    * for a confirmed block.
    *
    * @deprecated Deprecated since v1.13.0. Please use {@link getBlock} instead.
    */
-  async getConfirmedBlock(
+  getConfirmedBlock(
     _slot: number,
     _commitment?: Finality,
-  ): Promise<ConfirmedBlock> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<ConfirmedBlock>;
   /**
    * Fetch confirmed blocks between two slots
    */
-  async getBlocks(
+  getBlocks(
     _startSlot: number,
     _endSlot?: number,
     _commitment?: Finality,
-  ): Promise<Array<number>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<Array<number>>;
   /**
    * Fetch a list of Signatures from the cluster for a block, excluding rewards
    */
-  async getBlockSignatures(
+  getBlockSignatures(
     _slot: number,
     _commitment?: Finality,
-  ): Promise<BlockSignatures> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<BlockSignatures>;
   /**
    * Fetch a list of Signatures from the cluster for a confirmed block, excluding rewards
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getBlockSignatures} instead.
    */
-  async getConfirmedBlockSignatures(
+  getConfirmedBlockSignatures(
     _slot: number,
     _commitment?: Finality,
-  ): Promise<BlockSignatures> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<BlockSignatures>;
   /**
    * Fetch a transaction details for a confirmed transaction
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getTransaction} instead.
    */
-  async getConfirmedTransaction(
+  getConfirmedTransaction(
     _signature: TransactionSignature,
     _commitment?: Finality,
-  ): Promise<ConfirmedTransaction | null> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<ConfirmedTransaction | null>;
   /**
    * Fetch parsed transaction details for a confirmed transaction
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getParsedTransaction} instead.
    */
-  async getParsedConfirmedTransaction(
+  getParsedConfirmedTransaction(
     _signature: TransactionSignature,
     _commitment?: Finality,
-  ): Promise<ParsedConfirmedTransaction | null> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<ParsedConfirmedTransaction | null>;
   /**
    * Fetch parsed transaction details for a batch of confirmed transactions
    *
    * @deprecated Deprecated since Solana v1.8.0. Please use {@link getParsedTransactions} instead.
    */
-  async getParsedConfirmedTransactions(
+  getParsedConfirmedTransactions(
     _signatures: TransactionSignature[],
     _commitment?: Finality,
-  ): Promise<(ParsedConfirmedTransaction | null)[]> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<(ParsedConfirmedTransaction | null)[]>;
   /**
    * Fetch a list of all the confirmed signatures for transactions involving an address
    * within a specified slot range. Max range allowed is 10,000 slots.
@@ -2114,14 +1836,11 @@ export class Connection {
    * @param startSlot start slot, inclusive
    * @param endSlot end slot, inclusive
    */
-  async getConfirmedSignaturesForAddress(
+  getConfirmedSignaturesForAddress(
     _address: PublicKey,
     _startSlot: number,
     _endSlot: number,
-  ): Promise<Array<TransactionSignature>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<Array<TransactionSignature>>;
   /**
    * Returns confirmed signatures for transactions involving an
    * address backwards in time from the provided signature or most recent confirmed block
@@ -2130,14 +1849,11 @@ export class Connection {
    * @param address queried address
    * @param options
    */
-  async getConfirmedSignaturesForAddress2(
+  getConfirmedSignaturesForAddress2(
     _address: PublicKey,
     _options?: ConfirmedSignaturesForAddress2Options,
     _commitment?: Finality,
-  ): Promise<Array<ConfirmedSignatureInfo>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<Array<ConfirmedSignatureInfo>>;
   /**
    * Returns confirmed signatures for transactions involving an
    * address backwards in time from the provided signature or most recent confirmed block
@@ -2146,41 +1862,29 @@ export class Connection {
    * @param address queried address
    * @param options
    */
-  async getSignaturesForAddress(
+  getSignaturesForAddress(
     _address: PublicKey,
     _options?: SignaturesForAddressOptions,
     _commitment?: Finality,
-  ): Promise<Array<ConfirmedSignatureInfo>> {
-    throw new Error('Not implemented');
-  }
-
-  async getAddressLookupTable(
+  ): Promise<Array<ConfirmedSignatureInfo>>;
+  getAddressLookupTable(
     _accountKey: PublicKey,
     _config?: GetAccountInfoConfig,
-  ): Promise<RpcResponseAndContext<AddressLookupTableAccount | null>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<AddressLookupTableAccount | null>>;
   /**
    * Fetch the contents of a Nonce account from the cluster, return with context
    */
-  async getNonceAndContext(
+  getNonceAndContext(
     _nonceAccount: PublicKey,
     _commitment?: Commitment,
-  ): Promise<RpcResponseAndContext<NonceAccount | null>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<NonceAccount | null>>;
   /**
    * Fetch the contents of a Nonce account from the cluster
    */
-  async getNonce(
+  getNonce(
     _nonceAccount: PublicKey,
     _commitment?: Commitment,
-  ): Promise<NonceAccount | null> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<NonceAccount | null>;
   /**
    * Request an allocation of lamports to the specified address
    *
@@ -2195,22 +1899,16 @@ export class Connection {
    * })();
    * ```
    */
-  async requestAirdrop(
+  requestAirdrop(
     _to: PublicKey,
     _lamports: number,
-  ): Promise<TransactionSignature> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<TransactionSignature>;
   /**
    * get the stake minimum delegation
    */
-  async getStakeMinimumDelegation(
+  getStakeMinimumDelegation(
     _config?: GetStakeMinimumDelegationConfig,
-  ): Promise<RpcResponseAndContext<number>> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<RpcResponseAndContext<number>>;
   /**
    * Simulate a transaction
    *
@@ -2222,28 +1920,13 @@ export class Connection {
     _signers?: Array<Signer>,
     _includeAccounts?: boolean | Array<PublicKey>,
   ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>>;
-
   /**
    * Simulate a transaction
    */
-  // eslint-disable-next-line no-dupe-class-members
   simulateTransaction(
     _transaction: VersionedTransaction,
     _config?: SimulateTransactionConfig,
   ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>>;
-
-  /**
-   * Simulate a transaction
-   */
-  // eslint-disable-next-line no-dupe-class-members
-  async simulateTransaction(
-    _transactionOrMessage: VersionedTransaction | Transaction | Message,
-    _configOrSigners?: SimulateTransactionConfig | Array<Signer>,
-    _includeAccounts?: boolean | Array<PublicKey>,
-  ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-    throw new Error('Not implemented');
-  }
-
   /**
    * Sign and send a transaction
    *
@@ -2255,50 +1938,29 @@ export class Connection {
     _signers: Array<Signer>,
     _options?: SendOptions,
   ): Promise<TransactionSignature>;
-
   /**
    * Send a signed transaction
    */
-  // eslint-disable-next-line no-dupe-class-members
   sendTransaction(
     _transaction: VersionedTransaction,
     _options?: SendOptions,
   ): Promise<TransactionSignature>;
-
-  /**
-   * Sign and send a transaction
-   */
-  // eslint-disable-next-line no-dupe-class-members
-  async sendTransaction(
-    _transaction: VersionedTransaction | Transaction,
-    _signersOrOptions?: Array<Signer> | SendOptions,
-    _options?: SendOptions,
-  ): Promise<TransactionSignature> {
-    throw new Error('Not implemented');
-  }
-
   /**
    * Send a transaction that has already been signed and serialized into the
    * wire format
    */
-  async sendRawTransaction(
+  sendRawTransaction(
     _rawTransaction: Buffer | Uint8Array | Array<number>,
     _options?: SendOptions,
-  ): Promise<TransactionSignature> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<TransactionSignature>;
   /**
    * Send a transaction that has already been signed, serialized into the
    * wire format, and encoded as a base64 string
    */
-  async sendEncodedTransaction(
+  sendEncodedTransaction(
     _encodedTransaction: string,
     _options?: SendOptions,
-  ): Promise<TransactionSignature> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<TransactionSignature>;
   /**
    * Register a callback to be invoked whenever the specified account changes
    *
@@ -2311,21 +1973,15 @@ export class Connection {
     _publicKey: PublicKey,
     _callback: AccountChangeCallback,
     _commitment?: Commitment,
-  ): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  ): ClientSubscriptionId;
   /**
    * Deregister an account notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeAccountChangeListener(
+  removeAccountChangeListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Register a callback to be invoked whenever accounts owned by the
    * specified program change
@@ -2341,21 +1997,15 @@ export class Connection {
     _callback: ProgramAccountChangeCallback,
     _commitment?: Commitment,
     _filters?: GetProgramAccountsFilter[],
-  ): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  ): ClientSubscriptionId;
   /**
    * Deregister an account notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeProgramAccountChangeListener(
+  removeProgramAccountChangeListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Registers a callback to be invoked whenever logs are emitted.
    */
@@ -2363,42 +2013,30 @@ export class Connection {
     _filter: LogsFilter,
     _callback: LogsCallback,
     _commitment?: Commitment,
-  ): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  ): ClientSubscriptionId;
   /**
    * Deregister a logs callback.
    *
    * @param id client subscription id to deregister.
    */
-  async removeOnLogsListener(
+  removeOnLogsListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Register a callback to be invoked upon slot changes
    *
    * @param callback Function to invoke whenever the slot changes
    * @return subscription id
    */
-  onSlotChange(_callback: SlotChangeCallback): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  onSlotChange(_callback: SlotChangeCallback): ClientSubscriptionId;
   /**
    * Deregister a slot notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeSlotChangeListener(
+  removeSlotChangeListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Register a callback to be invoked upon slot updates. {@link SlotUpdate}'s
    * may be useful to track live progress of a cluster.
@@ -2406,21 +2044,15 @@ export class Connection {
    * @param callback Function to invoke whenever the slot updates
    * @return subscription id
    */
-  onSlotUpdate(_callback: SlotUpdateCallback): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  onSlotUpdate(_callback: SlotUpdateCallback): ClientSubscriptionId;
   /**
    * Deregister a slot update notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeSlotUpdateListener(
+  removeSlotUpdateListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Register a callback to be invoked upon signature updates
    *
@@ -2433,10 +2065,7 @@ export class Connection {
     _signature: TransactionSignature,
     _callback: SignatureResultCallback,
     _commitment?: Commitment,
-  ): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  ): ClientSubscriptionId;
   /**
    * Register a callback to be invoked when a transaction is
    * received and/or processed.
@@ -2451,39 +2080,28 @@ export class Connection {
     _signature: TransactionSignature,
     _callback: SignatureSubscriptionCallback,
     _options?: SignatureSubscriptionOptions,
-  ): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  ): ClientSubscriptionId;
   /**
    * Deregister a signature notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeSignatureListener(
+  removeSignatureListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
-
+  ): Promise<void>;
   /**
    * Register a callback to be invoked upon root changes
    *
    * @param callback Function to invoke whenever the root changes
    * @return subscription id
    */
-  onRootChange(_callback: RootChangeCallback): ClientSubscriptionId {
-    throw new Error('Not implemented');
-  }
-
+  onRootChange(_callback: RootChangeCallback): ClientSubscriptionId;
   /**
    * Deregister a root notification callback
    *
    * @param id client subscription id to deregister
    */
-  async removeRootChangeListener(
+  removeRootChangeListener(
     _clientSubscriptionId: ClientSubscriptionId,
-  ): Promise<void> {
-    throw new Error('Not implemented');
-  }
+  ): Promise<void>;
 }
