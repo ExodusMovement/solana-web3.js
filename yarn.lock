@@ -1186,14 +1186,6 @@
   "resolved" "https://registry.npmjs.org/@exodus/js-sha3/-/js-sha3-0.6.1-exodus1.tgz"
   "version" "0.6.1-exodus1"
 
-"@exodus/rpc-websockets@^7.5.0-exodus.3":
-  "integrity" "sha512-VufJ6OOMM7dwCXST2NdMJkuTq+jcgcAEnfFWPSyp5INaX/m4MbzvWF2xBf5zcJN2XYeyM49/wsLcqeqJN0yGyw=="
-  "resolved" "https://registry.npmjs.org/@exodus/rpc-websockets/-/rpc-websockets-7.5.0-exodus.3.tgz"
-  "version" "7.5.0-exodus.3"
-  dependencies:
-    "eventemitter3" "^4.0.7"
-    "ws" "^7.4.5"
-
 "@gar/promisify@^1.1.3":
   "integrity" "sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw=="
   "resolved" "https://registry.npmjs.org/@gar/promisify/-/promisify-1.1.3.tgz"
@@ -1350,11 +1342,6 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
-
-"@noble/ed25519@^1.7.0":
-  "integrity" "sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw=="
-  "resolved" "https://registry.npmjs.org/@noble/ed25519/-/ed25519-1.7.1.tgz"
-  "version" "1.7.1"
 
 "@noble/hashes@^1.1.2":
   "integrity" "sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A=="
@@ -4066,11 +4053,6 @@
   "resolved" "https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz"
   "version" "2.0.6"
 
-"fast-stable-stringify@^1.0.0":
-  "integrity" "sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag=="
-  "resolved" "https://registry.npmjs.org/fast-stable-stringify/-/fast-stable-stringify-1.0.0.tgz"
-  "version" "1.0.0"
-
 "fast-url-parser@^1.1.3":
   "integrity" "sha1-9K8+qfNNiicc9YrSs3WfQx8LMY0="
   "resolved" "https://registry.npmjs.org/fast-url-parser/-/fast-url-parser-1.1.3.tgz"
@@ -4309,6 +4291,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@~2.3.1", "fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "ftp@^0.3.10":
   "integrity" "sha1-kZfYYa2BQvPmPVqDv+TFn3MwiF0="
