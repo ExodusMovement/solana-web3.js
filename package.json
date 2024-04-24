@@ -22,7 +22,7 @@
   "browser": {
     "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
-  "main": "lib/index.esm.js",
+  "main": "lib/index.browser.esm.js",
   "types": "lib/index.d.ts",
   "browserslist": [
     "defaults",
