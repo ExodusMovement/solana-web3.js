@@ -20,10 +20,9 @@
     "access": "public"
   },
   "browser": {
-    "./lib/index.cjs.js": "./lib/index.browser.esm.js",
     "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
-  "main": "lib/index.cjs.js",
+  "main": "lib/index.esm.js",
   "types": "lib/index.d.ts",
   "browserslist": [
     "defaults",
