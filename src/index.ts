@@ -18,6 +18,7 @@ export * from './vote-account';
 export * from './sysvar';
 export * from './utils';
 export * from './layout';
+export * from './instruction';
 
 /**
  * There are 1-billion lamports in one SOL
