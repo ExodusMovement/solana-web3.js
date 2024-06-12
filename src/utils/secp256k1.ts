@@ -1,6 +1,6 @@
 import * as secp256k1 from '@noble/secp256k1';
 // @ts-ignore
-import * as hmac from 'create-hmac';
+import hmac from 'create-hmac';
 
 // Supply a synchronous hashing algorithm to make this
 // library interoperable with the synchronous APIs in web3.js.
