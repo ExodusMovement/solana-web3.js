@@ -1,6 +1,6 @@
 {
   "name": "@exodus/solana-web3.js",
-  "version": "1.63.1-exodus.7",
+  "version": "1.63.1-exodus.8",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
