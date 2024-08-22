@@ -1,6 +1,6 @@
 {
   "name": "@exodus/solana-web3.js",
-  "version": "1.63.1-exodus.8",
+  "version": "1.63.1-exodus.9",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
@@ -57,7 +57,6 @@
     "@exodus/js-sha3": "^0.6.1-exodus1",
     "@noble/secp256k1": "^1.6.3",
     "@exodus/fetch": "^1.2.1",
-    "@exodus/rpc-websockets": "^7.5.0-exodus.3",
     "@solana/buffer-layout": "^4.0.0",
     "bigint-buffer": "^1.1.5",
     "bn.js": "^5.0.0",
@@ -68,7 +67,6 @@
     "jayson": "^3.4.4",
     "json-stable-stringify": "^1.0.1",
     "node-fetch": "2",
-    "rpc-websockets": "^7.4.2",
     "superstruct": "^0.14.2",
     "sha.js": "^2.4.11",
     "tweetnacl": "^1.0.0"
