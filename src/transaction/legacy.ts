@@ -2,7 +2,6 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 
 import {PACKET_DATA_SIZE, SIGNATURE_LENGTH_IN_BYTES} from './constants';
-import {Connection} from '../connection';
 import {Message} from '../message';
 import {PublicKey} from '../publickey';
 import * as shortvec from '../utils/shortvec-encoding';
@@ -544,13 +543,6 @@ export class Transaction {
    */
   serializeMessage(): Buffer {
     return this._compile().serialize();
-  }
-
-  /**
-   * Get the estimated fee associated with a transaction
-   */
-  async getEstimatedFee(connection: Connection): Promise<number> {
-    return (await connection.getFeeForMessage(this.compileMessage())).value;
   }
 
   /**
