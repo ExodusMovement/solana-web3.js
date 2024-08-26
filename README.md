@@ -52,9 +52,6 @@ chore: release
 $ npm publish
 ```
 
-
-
-
 ## Documentation and examples
 
  - [The Solana Cookbook](https://solanacookbook.com/) has extensive task-based documentation using this library.
