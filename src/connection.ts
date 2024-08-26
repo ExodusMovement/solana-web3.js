@@ -2,15 +2,11 @@ import {Buffer} from 'buffer';
 
 import fetchImpl from './fetch-impl';
 import {PublicKey} from './publickey';
-import {
-  Transaction,
-  TransactionVersion,
-} from './transaction';
+import {Transaction, TransactionVersion} from './transaction';
 import {Message, VersionedMessage} from './message';
 import type {Blockhash} from './blockhash';
 import type {TransactionSignature} from './transaction';
 import type {CompiledInstruction} from './message';
-
 
 /**
  * Attempt to use a recent blockhash for up to 30 seconds
@@ -373,7 +369,6 @@ export type InflationGovernor = {
   taper: number;
   terminal: number;
 };
-
 
 /**
  * The inflation reward for an epoch
@@ -917,7 +912,6 @@ export type AccountBalancePair = {
   lamports: number;
 };
 
-
 /**
  * Slot updates which can be used for tracking the live progress of a cluster.
  * - `"firstShredReceived"`: connected node received the first shred of a block.
@@ -1311,5 +1305,3 @@ export type FetchMiddleware = (
   init: Parameters<FetchFn>[1],
   fetch: (...a: Parameters<FetchFn>) => void,
 ) => void;
-
-
