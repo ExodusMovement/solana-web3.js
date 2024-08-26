@@ -23,6 +23,35 @@
 
 This is the Solana Javascript API built on the Solana [JSON RPC API](https://docs.solana.com/apps/jsonrpc-api)
 
+## Publishing the library (for Exodus developers)
+ 
+1. Ensure the project builds, check types, tests and lint:
+
+```sh
+$ npm run build && npm run ok
+```
+
+2. Bump the version in `package.json` and commit the change:
+
+```sh
+$ git add package.json && git commit
+```
+
+For the commit message, include the package name and new version in the
+body. Example:
+
+```
+chore: release
+
+- @exodus/solana-web3.js@1.63.1-exodus.9
+```
+
+3. Publish the package:
+
+```sh
+$ npm publish
+```
+
 ## Documentation and examples
 
  - [The Solana Cookbook](https://solanacookbook.com/) has extensive task-based documentation using this library.
