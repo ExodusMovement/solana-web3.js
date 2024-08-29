@@ -1,13 +1,15 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 // @ts-ignore
-import {keccak256} from '@exodus/js-sha3';
+import jsSha3 from '@exodus/js-sha3';
 
 import {PublicKey} from '../publickey';
 import {TransactionInstruction} from '../transaction';
 import assert from '../utils/assert';
 import {publicKeyCreate, ecdsaSign} from '../utils/secp256k1';
 import {toBuffer} from '../utils/to-buffer';
+
+const {keccak256} = jsSha3;
 
 const PRIVATE_KEY_BYTES = 32;
 const ETHEREUM_ADDRESS_BYTES = 20;

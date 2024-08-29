@@ -22,6 +22,7 @@
   "browser": {
     "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
+  "type": "module",
   "main": "lib/index.browser.esm.js",
   "types": "lib/index.d.ts",
   "browserslist": [
