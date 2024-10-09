@@ -1,9 +1,9 @@
 import * as BufferLayout from '@solana/buffer-layout';
 import type {Buffer} from 'buffer';
 
-import * as Layout from './layout';
-import {PublicKey} from './publickey';
-import {toBuffer} from './utils/to-buffer';
+import * as Layout from './layout.js';
+import {PublicKey} from './publickey.js';
+import {toBuffer} from './utils/to-buffer.js';
 
 export const VOTE_PROGRAM_ID = new PublicKey(
   'Vote111111111111111111111111111111111111111',

@@ -1,10 +1,10 @@
 import * as BufferLayout from '@solana/buffer-layout';
 
-import assert from '../../utils/assert';
-import * as Layout from '../../layout';
-import {PublicKey} from '../../publickey';
-import {u64} from '../../utils/bigint';
-import {decodeData} from '../../account-data';
+import assert from '../../utils/assert.js';
+import * as Layout from '../../layout.js';
+import {PublicKey} from '../../publickey.js';
+import {u64} from '../../utils/bigint.js';
+import {decodeData} from '../../account-data.js';
 
 export type AddressLookupTableState = {
   deactivationSlot: bigint;

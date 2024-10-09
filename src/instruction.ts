@@ -1,7 +1,7 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 
-import * as Layout from './layout';
+import * as Layout from './layout.js';
 
 export interface IInstructionInputData {
   readonly instruction: number;

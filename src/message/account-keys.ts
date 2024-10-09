@@ -1,7 +1,7 @@
-import {LoadedAddresses} from '../connection';
-import {PublicKey} from '../publickey';
-import {TransactionInstruction} from '../transaction';
-import {MessageCompiledInstruction} from './index';
+import {LoadedAddresses} from '../connection.js';
+import {PublicKey} from '../publickey.js';
+import {TransactionInstruction} from '../transaction/index.js';
+import {MessageCompiledInstruction} from './index.js';
 
 export type AccountKeysFromLookups = LoadedAddresses;
 

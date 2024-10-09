@@ -1,4 +1,4 @@
-import {PACKET_DATA_SIZE} from './transaction';
+import {PACKET_DATA_SIZE} from './transaction/index.js';
 
 // Keep program chunks under PACKET_DATA_SIZE, leaving enough room for the
 // rest of the Transaction fields

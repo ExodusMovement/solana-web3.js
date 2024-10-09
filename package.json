@@ -1,6 +1,6 @@
 {
   "name": "@exodus/solana-web3.js",
-  "version": "1.63.1-exodus.9-rc2",
+  "version": "1.63.1-exodus.9-rc3",
   "description": "Solana Javascript API",
   "keywords": [
     "api",
@@ -110,6 +110,7 @@
     "cross-env": "7.0.3",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^8.0.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-mocha": "^10.0.4",
     "eslint-plugin-prettier": "^4.0.0",

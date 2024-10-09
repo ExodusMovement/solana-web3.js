@@ -1,12 +1,12 @@
 import {Buffer} from 'buffer';
 
-import fetchImpl from './fetch-impl';
-import {PublicKey} from './publickey';
-import {Transaction, TransactionVersion} from './transaction';
-import {Message, VersionedMessage} from './message';
-import type {Blockhash} from './blockhash';
-import type {TransactionSignature} from './transaction';
-import type {CompiledInstruction} from './message';
+import fetchImpl from './fetch-impl.js';
+import {PublicKey} from './publickey.js';
+import {Transaction, TransactionVersion} from './transaction/index.js';
+import {Message, VersionedMessage} from './message/index.js';
+import type {Blockhash} from './blockhash.js';
+import type {TransactionSignature} from './transaction/index.js';
+import type {CompiledInstruction} from './message/index.js';
 
 /**
  * Attempt to use a recent blockhash for up to 30 seconds

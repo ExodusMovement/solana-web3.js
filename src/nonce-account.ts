@@ -1,12 +1,12 @@
 import * as BufferLayout from '@solana/buffer-layout';
 import {Buffer} from 'buffer';
 
-import type {Blockhash} from './blockhash';
-import * as Layout from './layout';
-import {PublicKey} from './publickey';
-import type {FeeCalculator} from './fee-calculator';
-import {FeeCalculatorLayout} from './fee-calculator';
-import {toBuffer} from './utils/to-buffer';
+import type {Blockhash} from './blockhash.js';
+import * as Layout from './layout.js';
+import {PublicKey} from './publickey.js';
+import type {FeeCalculator} from './fee-calculator.js';
+import {FeeCalculatorLayout} from './fee-calculator.js';
+import {toBuffer} from './utils/to-buffer.js';
 
 /**
  * See https://github.com/solana-labs/solana/blob/0ea2843ec9cdc517572b8e62c959f41b55cf4453/sdk/src/nonce_state.rs#L29-L32

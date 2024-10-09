@@ -4,9 +4,9 @@ import {Buffer} from 'buffer';
 // @ts-ignore
 import {sha256} from 'sha.js';
 
-import {isOnCurve} from './utils/ed25519';
-import {Struct, SOLANA_SCHEMA} from './utils/borsh-schema';
-import {toBuffer} from './utils/to-buffer';
+import {isOnCurve} from './utils/ed25519.js';
+import {Struct, SOLANA_SCHEMA} from './utils/borsh-schema.js';
+import {toBuffer} from './utils/to-buffer.js';
 
 /**
  * Maximum length of derived pubkey seed

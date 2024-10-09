@@ -5,14 +5,17 @@ import {
   decodeData,
   InstructionType,
   IInstructionInputData,
-} from '../instruction';
-import * as Layout from '../layout';
-import {NONCE_ACCOUNT_LENGTH} from '../nonce-account';
-import {PublicKey} from '../publickey';
-import {SYSVAR_RECENT_BLOCKHASHES_PUBKEY, SYSVAR_RENT_PUBKEY} from '../sysvar';
-import {Transaction, TransactionInstruction} from '../transaction';
-import {toBuffer} from '../utils/to-buffer';
-import {u64} from '../utils/bigint';
+} from '../instruction.js';
+import * as Layout from '../layout.js';
+import {NONCE_ACCOUNT_LENGTH} from '../nonce-account.js';
+import {PublicKey} from '../publickey.js';
+import {
+  SYSVAR_RECENT_BLOCKHASHES_PUBKEY,
+  SYSVAR_RENT_PUBKEY,
+} from '../sysvar.js';
+import {Transaction, TransactionInstruction} from '../transaction/index.js';
+import {toBuffer} from '../utils/to-buffer.js';
+import {u64} from '../utils/bigint.js';
 
 /**
  * Create account system transaction params
