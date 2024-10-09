@@ -110,6 +110,7 @@
     "cross-env": "7.0.3",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^8.0.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-mocha": "^10.0.4",
     "eslint-plugin-prettier": "^4.0.0",
