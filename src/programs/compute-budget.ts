@@ -5,10 +5,10 @@ import {
   decodeData,
   InstructionType,
   IInstructionInputData,
-} from '../instruction';
-import {PublicKey} from '../publickey';
-import {TransactionInstruction} from '../transaction';
-import {u64} from '../utils/bigint';
+} from '../instruction.js';
+import {PublicKey} from '../publickey.js';
+import {TransactionInstruction} from '../transaction/index.js';
+import {u64} from '../utils/bigint.js';
 
 /**
  * Compute Budget Instruction class

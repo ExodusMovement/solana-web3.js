@@ -3,11 +3,11 @@ import * as BufferLayout from '@solana/buffer-layout';
 // @ts-ignore
 import jsSha3 from '@exodus/js-sha3';
 
-import {PublicKey} from '../publickey';
-import {TransactionInstruction} from '../transaction';
-import assert from '../utils/assert';
-import {publicKeyCreate, ecdsaSign} from '../utils/secp256k1';
-import {toBuffer} from '../utils/to-buffer';
+import {PublicKey} from '../publickey.js';
+import {TransactionInstruction} from '../transaction/index.js';
+import assert from '../utils/assert.js';
+import {publicKeyCreate, ecdsaSign} from '../utils/secp256k1.js';
+import {toBuffer} from '../utils/to-buffer.js';
 
 const {keccak256} = jsSha3;
 

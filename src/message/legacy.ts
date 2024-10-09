@@ -2,20 +2,23 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 
-import {PublicKey, PUBLIC_KEY_LENGTH} from '../publickey';
-import type {Blockhash} from '../blockhash';
-import * as Layout from '../layout';
-import {PACKET_DATA_SIZE, VERSION_PREFIX_MASK} from '../transaction/constants';
-import * as shortvec from '../utils/shortvec-encoding';
-import {toBuffer} from '../utils/to-buffer';
+import {PublicKey, PUBLIC_KEY_LENGTH} from '../publickey.js';
+import type {Blockhash} from '../blockhash.js';
+import * as Layout from '../layout.js';
+import {
+  PACKET_DATA_SIZE,
+  VERSION_PREFIX_MASK,
+} from '../transaction/constants.js';
+import * as shortvec from '../utils/shortvec-encoding.js';
+import {toBuffer} from '../utils/to-buffer.js';
 import {
   MessageHeader,
   MessageAddressTableLookup,
   MessageCompiledInstruction,
-} from './index';
-import {TransactionInstruction} from '../transaction';
-import {CompiledKeys} from './compiled-keys';
-import {MessageAccountKeys} from './account-keys';
+} from './index.js';
+import {TransactionInstruction} from '../transaction/index.js';
+import {CompiledKeys} from './compiled-keys.js';
+import {MessageAccountKeys} from './account-keys.js';
 
 /**
  * An instruction to execute by a program

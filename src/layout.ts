@@ -1,7 +1,7 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 
-import {VoteAuthorizeWithSeedArgs} from './programs/vote';
+import {VoteAuthorizeWithSeedArgs} from './programs/vote.js';
 
 /**
  * Layout for a public key

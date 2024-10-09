@@ -1,13 +1,13 @@
 import * as BufferLayout from '@solana/buffer-layout';
 
-import {Signer} from '../keypair';
-import assert from '../utils/assert';
-import {VersionedMessage} from '../message/versioned';
-import {SIGNATURE_LENGTH_IN_BYTES} from './constants';
-import * as shortvec from '../utils/shortvec-encoding';
-import * as Layout from '../layout';
-import {sign} from '../utils/ed25519';
-import {PublicKey} from '../publickey';
+import {Signer} from '../keypair.js';
+import assert from '../utils/assert.js';
+import {VersionedMessage} from '../message/versioned.js';
+import {SIGNATURE_LENGTH_IN_BYTES} from './constants.js';
+import * as shortvec from '../utils/shortvec-encoding.js';
+import * as Layout from '../layout.js';
+import {sign} from '../utils/ed25519.js';
+import {PublicKey} from '../publickey.js';
 
 export type TransactionVersion = 'legacy' | 0;
 

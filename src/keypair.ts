@@ -1,5 +1,9 @@
-import {generateKeypair, getPublicKey, Ed25519Keypair} from './utils/ed25519';
-import {PublicKey} from './publickey';
+import {
+  generateKeypair,
+  getPublicKey,
+  Ed25519Keypair,
+} from './utils/ed25519.js';
+import {PublicKey} from './publickey.js';
 
 /**
  * Keypair signer interface

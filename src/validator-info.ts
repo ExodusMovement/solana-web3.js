@@ -6,9 +6,9 @@ import {
   type as pick,
 } from 'superstruct';
 
-import * as Layout from './layout';
-import * as shortvec from './utils/shortvec-encoding';
-import {PublicKey, PUBLIC_KEY_LENGTH} from './publickey';
+import * as Layout from './layout.js';
+import * as shortvec from './utils/shortvec-encoding.js';
+import {PublicKey, PUBLIC_KEY_LENGTH} from './publickey.js';
 
 export const VALIDATOR_INFO_KEY = new PublicKey(
   'Va1idator1nfo111111111111111111111111111111',

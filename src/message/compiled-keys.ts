@@ -1,9 +1,9 @@
-import {MessageHeader, MessageAddressTableLookup} from './index';
-import {AccountKeysFromLookups} from './account-keys';
-import {AddressLookupTableAccount} from '../programs';
-import {TransactionInstruction} from '../transaction';
-import assert from '../utils/assert';
-import {PublicKey} from '../publickey';
+import {MessageHeader, MessageAddressTableLookup} from './index.js';
+import {AccountKeysFromLookups} from './account-keys.js';
+import {AddressLookupTableAccount} from '../programs/index.js';
+import {TransactionInstruction} from '../transaction/index.js';
+import assert from '../utils/assert.js';
+import {PublicKey} from '../publickey.js';
 
 export type CompiledKeyMeta = {
   isSigner: boolean;

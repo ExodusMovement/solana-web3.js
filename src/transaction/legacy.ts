@@ -1,16 +1,16 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 
-import {PACKET_DATA_SIZE, SIGNATURE_LENGTH_IN_BYTES} from './constants';
-import {Message} from '../message';
-import {PublicKey} from '../publickey';
-import * as shortvec from '../utils/shortvec-encoding';
-import {toBuffer} from '../utils/to-buffer';
-import invariant from '../utils/assert';
-import type {Signer} from '../keypair';
-import type {Blockhash} from '../blockhash';
-import type {CompiledInstruction} from '../message';
-import {sign, verify} from '../utils/ed25519';
+import {PACKET_DATA_SIZE, SIGNATURE_LENGTH_IN_BYTES} from './constants.js';
+import {Message} from '../message/index.js';
+import {PublicKey} from '../publickey.js';
+import * as shortvec from '../utils/shortvec-encoding.js';
+import {toBuffer} from '../utils/to-buffer.js';
+import invariant from '../utils/assert.js';
+import type {Signer} from '../keypair.js';
+import type {Blockhash} from '../blockhash.js';
+import type {CompiledInstruction} from '../message/index.js';
+import {sign, verify} from '../utils/ed25519.js';
 
 /**
  * Transaction signature as base-58 encoded string

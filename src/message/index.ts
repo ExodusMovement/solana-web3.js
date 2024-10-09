@@ -1,10 +1,10 @@
-import {PublicKey} from '../publickey';
+import {PublicKey} from '../publickey.js';
 
-export * from './account-keys';
+export * from './account-keys.js';
 // note: compiled-keys is internal and doesn't need to be exported
-export * from './legacy';
-export * from './versioned';
-export * from './v0';
+export * from './legacy.js';
+export * from './versioned.js';
+export * from './v0.js';
 
 /**
  * The message header, identifying signed and read-only account

@@ -1,8 +1,8 @@
 import {Buffer} from 'buffer';
 
-import {generatePrivateKey, getPublicKey} from './utils/ed25519';
-import {toBuffer} from './utils/to-buffer';
-import {PublicKey} from './publickey';
+import {generatePrivateKey, getPublicKey} from './utils/ed25519.js';
+import {toBuffer} from './utils/to-buffer.js';
+import {PublicKey} from './publickey.js';
 
 /**
  * An account key pair (public and secret keys).
