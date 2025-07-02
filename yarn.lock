@@ -1172,15 +1172,6 @@
     "@ethersproject/logger" "^5.6.0"
     hash.js "1.1.7"
 
-"@exodus/fetch@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/@exodus/fetch/-/fetch-1.2.1.tgz"
-  integrity sha512-VdDOychePt+d5L4loB3CDW32Q3AI9cXNcsOUBdc8kepTVJ9I6z7TbFuKvotd1jIgQY4FNV5AQGqonZZpRyDvRg==
-  dependencies:
-    fetchival "^0.3.3"
-    node-fetch "^2.6.0"
-    ws "^6.1.0"
-
 "@exodus/js-sha3@^0.6.1-exodus1":
   version "0.6.1-exodus1"
   resolved "https://registry.npmjs.org/@exodus/js-sha3/-/js-sha3-0.6.1-exodus1.tgz"
@@ -2433,11 +2424,6 @@ astral-regex@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-2.0.0.tgz"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
-
-async-limiter@~1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/async-limiter/-/async-limiter-1.0.1.tgz"
-  integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
 async@^2.6.2:
   version "2.6.4"
@@ -4074,11 +4060,6 @@ fetch-ponyfill@^7.1.0:
   integrity sha512-FhbbL55dj/qdVO3YNK7ZEkshvj3eQ7EuIGV2I6ic/2YiocvyWv+7jg2s4AyS0wdRU75s3tA8ZxI/xPigb0v5Aw==
   dependencies:
     node-fetch "~2.6.1"
-
-fetchival@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/fetchival/-/fetchival-0.3.3.tgz"
-  integrity sha512-4C2NlX2yDiOD81/ZOtpuBsIq+tdSqPXD4pp5ZNiLDBJckoquvjJNzPEtqj4NjXVtsP1GAWPcR9ebLNSWvevUoA==
 
 figures@^2.0.0:
   version "2.0.0"
@@ -6151,7 +6132,7 @@ node-emoji@^1.11.0:
   dependencies:
     lodash "^4.17.21"
 
-node-fetch@2, node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7, node-fetch@~2.6.1:
+node-fetch@2, node-fetch@2.6.7, node-fetch@^2.6.1, node-fetch@^2.6.7, node-fetch@~2.6.1:
   version "2.6.7"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
@@ -8688,13 +8669,6 @@ ws@*, ws@^7.3.1, ws@^7.4.5, ws@^7.4.6:
   version "7.5.7"
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.7.tgz"
   integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
-
-ws@^6.1.0:
-  version "6.2.2"
-  resolved "https://registry.npmjs.org/ws/-/ws-6.2.2.tgz"
-  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
-  dependencies:
-    async-limiter "~1.0.0"
 
 ws@^8.5.0:
   version "8.5.0"

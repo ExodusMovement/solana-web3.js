@@ -108,7 +108,6 @@ function generateConfig(configType, format) {
           // Prevent dependencies from being bundled
           config.external = [
             /@babel\/runtime/,
-            '@exodus/fetch',
             'readable-stream',
             '@exodus/js-sha3',
             '@exodus/secp256k1',
