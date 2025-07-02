@@ -1,6 +1,5 @@
 import {Buffer} from 'buffer';
 
-import fetchImpl from './fetch-impl.js';
 import {PublicKey} from './publickey.js';
 import {Transaction, TransactionVersion} from './transaction/index.js';
 import {Message, VersionedMessage} from './message/index.js';
@@ -1295,7 +1294,7 @@ export type HttpHeaders = {
 /**
  * The type of the JavaScript `fetch()` API
  */
-export type FetchFn = typeof fetchImpl;
+export type FetchFn = typeof globalThis.fetch;
 
 /**
  * A callback used to augment the outgoing HTTP request

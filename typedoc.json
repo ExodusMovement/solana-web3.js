@@ -2,6 +2,5 @@
   "entryPoints": ["src/index.ts"],
   "excludeInternal": true,
   "excludePrivate": true,
-  "intentionallyNotExported": ["src/fetch-impl.ts:default"],
   "out": "doc"
 }
