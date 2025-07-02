@@ -108,23 +108,21 @@ function generateConfig(configType, format) {
           // Prevent dependencies from being bundled
           config.external = [
             /@babel\/runtime/,
+            '@exodus/crypto/hash',
+            '@exodus/crypto/secp256k1',
+            '@exodus/crypto/curve25519',
+            '@exodus/crypto/randomBytes',
             'readable-stream',
-            '@exodus/js-sha3',
-            '@exodus/secp256k1',
             '@solana/buffer-layout',
             'bn.js',
             'borsh',
             'bs58',
             'buffer',
-            'crypto-hash',
-            'create-hmac',
             'http',
             'https',
             'jayson/lib/client/browser',
             'json-stable-stringify',
             'superstruct',
-            'sha.js',
-            'tweetnacl',
           ];
 
           break;
