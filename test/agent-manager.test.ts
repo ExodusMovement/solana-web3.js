@@ -3,6 +3,9 @@ import {expect} from 'chai';
 import {AgentManager, DESTROY_TIMEOUT_MS} from '../src/agent-manager';
 import {sleep} from '../src/utils/sleep';
 
+/* @ts-expect-error */
+jest.setTimeout(2 * DESTROY_TIMEOUT_MS)
+
 describe('AgentManager', () => {
   it('works', async () => {
     const manager = new AgentManager();
@@ -36,5 +39,5 @@ describe('AgentManager', () => {
     await sleep(DESTROY_TIMEOUT_MS);
 
     expect(manager._agent).not.to.eq(agent);
-  }).timeout(2 * DESTROY_TIMEOUT_MS);
+  });
 });
