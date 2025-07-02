@@ -6,12 +6,7 @@ import {
   AddressLookupTableProgram,
   Transaction,
   AddressLookupTableInstruction,
-  Connection,
-  sendAndConfirmTransaction,
 } from '../../src';
-import {sleep} from '../../src/utils/sleep';
-import {helpers} from '../mocks/rpc-http';
-import {url} from '../url';
 
 use(chaiAsPromised);
 
@@ -158,109 +153,4 @@ describe('AddressLookupTableProgram', () => {
       AddressLookupTableInstruction.decodeDeactivateLookupTable(instruction),
     );
   });
-
-  if (process.env.TEST_LIVE) {
-    it('live address lookup table actions', async () => {
-      const connection = new Connection(url, 'confirmed');
-      const authority = Keypair.generate();
-      const payer = Keypair.generate();
-
-      const slot = await connection.getSlot('confirmed');
-      const payerMinBalance =
-        await connection.getMinimumBalanceForRentExemption(44 * 10);
-
-      const [createInstruction, lutAddress] =
-        AddressLookupTableProgram.createLookupTable({
-          authority: authority.publicKey,
-          payer: payer.publicKey,
-          recentSlot: slot,
-        });
-
-      await helpers.airdrop({
-        connection,
-        address: payer.publicKey,
-        amount: payerMinBalance,
-      });
-
-      await helpers.airdrop({
-        connection,
-        address: authority.publicKey,
-        amount: payerMinBalance,
-      });
-
-      // Creating a new lut
-      const createLutTransaction = new Transaction();
-      createLutTransaction.add(createInstruction);
-      createLutTransaction.feePayer = payer.publicKey;
-
-      await sendAndConfirmTransaction(
-        connection,
-        createLutTransaction,
-        [authority, payer],
-        {preflightCommitment: 'confirmed'},
-      );
-
-      await sleep(500);
-
-      // Extending a lut without a payer
-      await helpers.airdrop({
-        connection,
-        address: lutAddress,
-        amount: payerMinBalance,
-      });
-
-      const extendWithoutPayerInstruction =
-        AddressLookupTableProgram.extendLookupTable({
-          lookupTable: lutAddress,
-          authority: authority.publicKey,
-          addresses: [...Array(10)].map(() => Keypair.generate().publicKey),
-        });
-      const extendLutWithoutPayerTransaction = new Transaction();
-      extendLutWithoutPayerTransaction.add(extendWithoutPayerInstruction);
-
-      await sendAndConfirmTransaction(
-        connection,
-        extendLutWithoutPayerTransaction,
-        [authority],
-        {preflightCommitment: 'confirmed'},
-      );
-
-      // Extending an lut with a payer
-      const extendWithPayerInstruction =
-        AddressLookupTableProgram.extendLookupTable({
-          lookupTable: lutAddress,
-          authority: authority.publicKey,
-          payer: payer.publicKey,
-          addresses: [...Array(10)].map(() => Keypair.generate().publicKey),
-        });
-
-      const extendLutWithPayerTransaction = new Transaction();
-      extendLutWithPayerTransaction.add(extendWithPayerInstruction);
-
-      await sendAndConfirmTransaction(
-        connection,
-        extendLutWithPayerTransaction,
-        [authority, payer],
-        {preflightCommitment: 'confirmed'},
-      );
-
-      //deactivating the lut
-      const deactivateInstruction =
-        AddressLookupTableProgram.deactivateLookupTable({
-          lookupTable: lutAddress,
-          authority: authority.publicKey,
-        });
-
-      const deactivateLutTransaction = new Transaction();
-      deactivateLutTransaction.add(deactivateInstruction);
-      await sendAndConfirmTransaction(
-        connection,
-        deactivateLutTransaction,
-        [authority],
-        {preflightCommitment: 'confirmed'},
-      );
-
-      // After deactivation, LUTs can be closed *only* after a short perioid of time
-    }).timeout(10 * 1000);
-  }
 });

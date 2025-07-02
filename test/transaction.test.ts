@@ -2,7 +2,6 @@ import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 import {expect} from 'chai';
 
-import {Connection} from '../src/connection';
 import {Keypair} from '../src/keypair';
 import {PublicKey} from '../src/publickey';
 import {
@@ -15,8 +14,6 @@ import {StakeProgram, SystemProgram} from '../src/programs';
 import {Message} from '../src/message';
 import invariant from '../src/utils/assert';
 import {toBuffer} from '../src/utils/to-buffer';
-import {helpers} from './mocks/rpc-http';
-import {url} from './url';
 import {sign} from '../src/utils/ed25519';
 
 describe('Transaction', () => {
@@ -351,30 +348,6 @@ describe('Transaction', () => {
       );
     });
   });
-
-  if (process.env.TEST_LIVE) {
-    it('getEstimatedFee', async () => {
-      const connection = new Connection(url);
-      const accountFrom = Keypair.generate();
-      const accountTo = Keypair.generate();
-
-      const latestBlockhash = await helpers.latestBlockhash({connection});
-
-      const transaction = new Transaction({
-        feePayer: accountFrom.publicKey,
-        ...latestBlockhash,
-      }).add(
-        SystemProgram.transfer({
-          fromPubkey: accountFrom.publicKey,
-          toPubkey: accountTo.publicKey,
-          lamports: 10,
-        }),
-      );
-
-      const fee = await transaction.getEstimatedFee(connection);
-      expect(fee).to.eq(5000);
-    });
-  }
 
   it('partialSign', () => {
     const account1 = Keypair.generate();

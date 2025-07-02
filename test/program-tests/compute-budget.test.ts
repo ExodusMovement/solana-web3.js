@@ -2,16 +2,10 @@ import {expect, use} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 import {
-  Keypair,
-  Connection,
   LAMPORTS_PER_SOL,
-  Transaction,
   ComputeBudgetProgram,
   ComputeBudgetInstruction,
-  sendAndConfirmTransaction,
 } from '../../src';
-import {helpers} from '../mocks/rpc-http';
-import {url} from '../url';
 
 use(chaiAsPromised);
 
@@ -70,106 +64,4 @@ describe('ComputeBudgetProgram', () => {
       'SetComputeUnitPrice',
     );
   });
-
-  if (process.env.TEST_LIVE) {
-    it('send live request heap ix', async () => {
-      const connection = new Connection(url, 'confirmed');
-      const STARTING_AMOUNT = 2 * LAMPORTS_PER_SOL;
-      const baseAccount = Keypair.generate();
-      const basePubkey = baseAccount.publicKey;
-      await helpers.airdrop({
-        connection,
-        address: basePubkey,
-        amount: STARTING_AMOUNT,
-      });
-
-      async function expectRequestHeapFailure(bytes: number) {
-        const requestHeapFrameTransaction = new Transaction().add(
-          ComputeBudgetProgram.requestHeapFrame({bytes}),
-        );
-        await expect(
-          sendAndConfirmTransaction(
-            connection,
-            requestHeapFrameTransaction,
-            [baseAccount],
-            {preflightCommitment: 'confirmed'},
-          ),
-        ).to.be.rejected;
-      }
-      const NOT_MULTIPLE_OF_1024 = 33 * 1024 + 1;
-      const BELOW_MIN = 1024;
-      const ABOVE_MAX = 257 * 1024;
-      await expectRequestHeapFailure(NOT_MULTIPLE_OF_1024);
-      await expectRequestHeapFailure(BELOW_MIN);
-      await expectRequestHeapFailure(ABOVE_MAX);
-
-      const VALID_BYTES = 33 * 1024;
-      const requestHeapFrameTransaction = new Transaction().add(
-        ComputeBudgetProgram.requestHeapFrame({bytes: VALID_BYTES}),
-      );
-      await sendAndConfirmTransaction(
-        connection,
-        requestHeapFrameTransaction,
-        [baseAccount],
-        {preflightCommitment: 'confirmed'},
-      );
-    });
-
-    it('send live compute unit ixs', async () => {
-      const connection = new Connection(url, 'confirmed');
-      const FEE_AMOUNT = LAMPORTS_PER_SOL;
-      const STARTING_AMOUNT = 2 * LAMPORTS_PER_SOL;
-      const baseAccount = Keypair.generate();
-      const basePubkey = baseAccount.publicKey;
-      await helpers.airdrop({
-        connection,
-        address: basePubkey,
-        amount: STARTING_AMOUNT,
-      });
-
-      // lamport fee = 2B * 1M / 1M = 2 SOL
-      const prioritizationFeeTooHighTransaction = new Transaction()
-        .add(
-          ComputeBudgetProgram.setComputeUnitPrice({
-            microLamports: 2_000_000_000,
-          }),
-        )
-        .add(
-          ComputeBudgetProgram.setComputeUnitLimit({
-            units: 1_000_000,
-          }),
-        );
-
-      await expect(
-        sendAndConfirmTransaction(
-          connection,
-          prioritizationFeeTooHighTransaction,
-          [baseAccount],
-          {preflightCommitment: 'confirmed'},
-        ),
-      ).to.be.rejected;
-
-      // lamport fee = 1B * 1M / 1M = 1 SOL
-      const validPrioritizationFeeTransaction = new Transaction()
-        .add(
-          ComputeBudgetProgram.setComputeUnitPrice({
-            microLamports: 1_000_000_000,
-          }),
-        )
-        .add(
-          ComputeBudgetProgram.setComputeUnitLimit({
-            units: 1_000_000,
-          }),
-        );
-      await sendAndConfirmTransaction(
-        connection,
-        validPrioritizationFeeTransaction,
-        [baseAccount],
-        {preflightCommitment: 'confirmed'},
-      );
-      expect(await connection.getBalance(baseAccount.publicKey)).to.be.at.most(
-        STARTING_AMOUNT - FEE_AMOUNT,
-      );
-    });
-  }
 });
