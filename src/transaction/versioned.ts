@@ -23,7 +23,7 @@ export class VersionedTransaction {
   }
 
   constructor(message: VersionedMessage, signatures?: Array<Uint8Array>) {
-    if (signatures !== undefined  && signatures.length !==  0) {
+    if (signatures !== undefined && signatures.length !== 0) {
       assert(
         signatures.length === message.header.numRequiredSignatures,
         'Expected signatures length to be equal to the number of required signatures',

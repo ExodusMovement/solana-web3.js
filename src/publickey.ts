@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
 // @ts-ignore
-import { hashSync } from '@exodus/crypto/hash';
+import {hashSync} from '@exodus/crypto/hash';
 
 import {isOnCurve} from './utils/ed25519.js';
 import {Struct, SOLANA_SCHEMA} from './utils/borsh-schema.js';

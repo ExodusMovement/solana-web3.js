@@ -1,7 +1,7 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 // @ts-ignore
-import { hashSync } from '@exodus/crypto/hash';
+import {hashSync} from '@exodus/crypto/hash';
 
 import {PublicKey} from '../publickey.js';
 import {TransactionInstruction} from '../transaction/index.js';
@@ -99,7 +99,9 @@ export class Secp256k1Program {
     );
 
     try {
-      return hashSync('keccak256', toBuffer(publicKey), 'buffer').slice(-ETHEREUM_ADDRESS_BYTES);
+      return hashSync('keccak256', toBuffer(publicKey), 'buffer').slice(
+        -ETHEREUM_ADDRESS_BYTES,
+      );
     } catch (error) {
       throw new Error(`Error constructing Ethereum address: ${error}`);
     }

@@ -4,7 +4,7 @@ import {AgentManager, DESTROY_TIMEOUT_MS} from '../src/agent-manager';
 import {sleep} from '../src/utils/sleep';
 
 /* @ts-expect-error */
-jest.setTimeout(2 * DESTROY_TIMEOUT_MS)
+jest.setTimeout(2 * DESTROY_TIMEOUT_MS);
 
 describe('AgentManager', () => {
   it('works', async () => {

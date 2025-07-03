@@ -90,7 +90,7 @@ function generateConfig(configType, format) {
     },
   };
 
-  assert(browser && format === 'esm')
+  assert(browser && format === 'esm');
 
   switch (configType) {
     case 'browser':
