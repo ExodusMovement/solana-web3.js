@@ -112,6 +112,7 @@ function generateConfig(configType, format) {
             '@exodus/crypto/secp256k1',
             '@exodus/crypto/curve25519',
             '@exodus/crypto/randomBytes',
+            '@exodus/bigint-buffer',
             'readable-stream',
             '@solana/buffer-layout',
             'bn.js',

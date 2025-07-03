@@ -1,6 +1,6 @@
 import {Buffer} from 'buffer';
 import {blob, Layout} from '@solana/buffer-layout';
-import {toBigIntLE, toBufferLE} from 'bigint-buffer';
+import {toBigIntLE, toBufferLE} from '@exodus/bigint-buffer';
 
 interface EncodeDecode<T> {
   decode(buffer: Buffer, offset?: number): T;

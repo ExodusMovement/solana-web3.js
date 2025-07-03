@@ -1,4 +1,4 @@
-import {toBufferLE} from 'bigint-buffer';
+import {toBufferLE} from '@exodus/bigint-buffer';
 import * as BufferLayout from '@solana/buffer-layout';
 
 import * as Layout from '../../layout.js';

@@ -1151,6 +1151,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@exodus/bigint-buffer@^1.1.5-exodus.0":
+  version "1.1.5-exodus.0"
+  resolved "https://registry.yarnpkg.com/@exodus/bigint-buffer/-/bigint-buffer-1.1.5-exodus.0.tgz#640b6493b1dc6b37ca00b1b9cd84e8d10cc81c3f"
+  integrity sha512-3LYxeHfnsMztcs+DI3153WDDmhPYafF8MwuMLnQk/sxr35GjRKWdnRoP3B670l3QWL3LCiBG2ctTIcyYypHhjg==
+  dependencies:
+    bindings "^1.3.0"
+
 "@exodus/crypto@^1.0.0-rc.25":
   version "1.0.0-rc.27"
   resolved "https://registry.yarnpkg.com/@exodus/crypto/-/crypto-1.0.0-rc.27.tgz#2774e980b9bce90e55a77dfb5e7e5e03b2e16ecc"
@@ -2410,13 +2417,6 @@ before-after-hook@^2.2.0:
   version "2.2.2"
   resolved "https://registry.npmjs.org/before-after-hook/-/before-after-hook-2.2.2.tgz"
   integrity sha512-3pZEU3NT5BFUo/AD5ERPWOgQOCZITni6iavr5AUw5AUwQjMlI0kzu5btnyD39AF0gUEsDPwJT+oY1ORBJijPjQ==
-
-bigint-buffer@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/bigint-buffer/-/bigint-buffer-1.1.5.tgz"
-  integrity sha512-trfYco6AoZ+rKhKnxA0hgX0HAbVP/s808/EuDSe2JDzUnCp/xAsli35Orvk67UrTEcwuxZqYZDmfA2RXJgxVvA==
-  dependencies:
-    bindings "^1.3.0"
 
 bin-links@^3.0.3:
   version "3.0.3"
