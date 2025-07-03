@@ -48,7 +48,7 @@
     "pretty": "prettier --check '{,{src,test}/**/}*.{j,t}s'",
     "pretty:fix": "prettier --write '{,{src,test}/**/}*.{j,t}s'",
     "re": "semantic-release --repository-url git@github.com:solana-labs/solana-web3.js.git",
-    "test": "npx @exodus/test --jest --esbuild"
+    "test": "npx @exodus/test@1.0.0-rc.94 --jest --esbuild"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
