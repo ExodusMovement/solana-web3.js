@@ -1,13 +1,10 @@
 import {Buffer} from 'buffer';
 import * as BufferLayout from '@exodus/solana-buffer-layout';
 
-import {Keypair} from '../keypair.js';
 import {PublicKey} from '../publickey.js';
 import {TransactionInstruction} from '../transaction/index.js';
 import assert from '../utils/assert.js';
-import {sign} from '../utils/ed25519.js';
 
-const PRIVATE_KEY_BYTES = 64;
 const PUBLIC_KEY_BYTES = 32;
 const SIGNATURE_BYTES = 64;
 
@@ -123,35 +120,5 @@ export class Ed25519Program {
       programId: Ed25519Program.programId,
       data: instructionData,
     });
-  }
-
-  /**
-   * Create an ed25519 instruction with a private key. The private key
-   * must be a buffer that is 64 bytes long.
-   */
-  static createInstructionWithPrivateKey(
-    params: CreateEd25519InstructionWithPrivateKeyParams,
-  ): TransactionInstruction {
-    const {privateKey, message, instructionIndex} = params;
-
-    assert(
-      privateKey.length === PRIVATE_KEY_BYTES,
-      `Private key must be ${PRIVATE_KEY_BYTES} bytes but received ${privateKey.length} bytes`,
-    );
-
-    try {
-      const keypair = Keypair.fromSecretKey(privateKey);
-      const publicKey = keypair.publicKey.toBytes();
-      const signature = sign(message, keypair.secretKey);
-
-      return this.createInstructionWithPublicKey({
-        publicKey,
-        message,
-        signature,
-        instructionIndex,
-      });
-    } catch (error) {
-      throw new Error(`Error creating instruction; ${error}`);
-    }
   }
 }

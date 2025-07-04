@@ -6,10 +6,8 @@ import {hashSync} from '@exodus/crypto/hash';
 import {PublicKey} from '../publickey.js';
 import {TransactionInstruction} from '../transaction/index.js';
 import assert from '../utils/assert.js';
-import {publicKeyCreate, ecdsaSign} from '../utils/secp256k1.js';
 import {toBuffer} from '../utils/to-buffer.js';
 
-const PRIVATE_KEY_BYTES = 32;
 const ETHEREUM_ADDRESS_BYTES = 20;
 const PUBLIC_KEY_BYTES = 64;
 const SIGNATURE_OFFSETS_SERIALIZED_SIZE = 11;
@@ -190,41 +188,5 @@ export class Secp256k1Program {
       programId: Secp256k1Program.programId,
       data: instructionData,
     });
-  }
-
-  /**
-   * Create an secp256k1 instruction with a private key. The private key
-   * must be a buffer that is 32 bytes long.
-   */
-  static createInstructionWithPrivateKey(
-    params: CreateSecp256k1InstructionWithPrivateKeyParams,
-  ): TransactionInstruction {
-    const {privateKey: pkey, message, instructionIndex} = params;
-
-    assert(
-      pkey.length === PRIVATE_KEY_BYTES,
-      `Private key must be ${PRIVATE_KEY_BYTES} bytes but received ${pkey.length} bytes`,
-    );
-
-    try {
-      const privateKey = toBuffer(pkey);
-      const publicKey = publicKeyCreate(
-        privateKey,
-        false /* isCompressed */,
-      ).slice(1); // throw away leading byte
-
-      const messageHash = hashSync('keccak256', toBuffer(message), 'buffer');
-      const [signature, recoveryId] = ecdsaSign(messageHash, privateKey);
-
-      return this.createInstructionWithPublicKey({
-        publicKey,
-        message,
-        signature,
-        recoveryId,
-        instructionIndex,
-      });
-    } catch (error) {
-      throw new Error(`Error creating instruction; ${error}`);
-    }
   }
 }
