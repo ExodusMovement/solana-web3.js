@@ -1,5 +1,5 @@
 import {toBufferLE} from '@exodus/bigint-buffer';
-import * as BufferLayout from '@solana/buffer-layout';
+import * as BufferLayout from '@exodus/solana-buffer-layout';
 
 import * as Layout from '../../layout.js';
 import {PublicKey} from '../../publickey.js';

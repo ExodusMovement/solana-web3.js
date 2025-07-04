@@ -1,4 +1,4 @@
-import * as BufferLayout from '@solana/buffer-layout';
+import * as BufferLayout from '@exodus/solana-buffer-layout';
 import {Buffer} from 'buffer';
 
 import type {Blockhash} from './blockhash.js';

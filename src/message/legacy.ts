@@ -1,6 +1,6 @@
 import bs58 from 'bs58';
 import {Buffer} from 'buffer';
-import * as BufferLayout from '@solana/buffer-layout';
+import * as BufferLayout from '@exodus/solana-buffer-layout';
 
 import {PublicKey, PUBLIC_KEY_LENGTH} from '../publickey.js';
 import type {Blockhash} from '../blockhash.js';

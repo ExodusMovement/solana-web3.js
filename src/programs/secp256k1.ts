@@ -1,5 +1,5 @@
 import {Buffer} from 'buffer';
-import * as BufferLayout from '@solana/buffer-layout';
+import * as BufferLayout from '@exodus/solana-buffer-layout';
 // @ts-ignore
 import {hashSync} from '@exodus/crypto/hash';
 
