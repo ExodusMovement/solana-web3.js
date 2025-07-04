@@ -7,7 +7,7 @@ export const ecdsaSign = (
 ) => {
   const {signature, recovery} = secp256k1.ecdsaSignHashSync({
     hash: msgHash,
-    priateKey: privKey,
+    privateKey: privKey,
     recovery: true,
   });
   return [signature, recovery];
