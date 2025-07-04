@@ -121,7 +121,6 @@ function generateConfig(configType, format) {
             'buffer',
             'http',
             'https',
-            'json-stable-stringify',
             'superstruct',
           ];
 
