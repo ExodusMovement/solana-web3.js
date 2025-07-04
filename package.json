@@ -31,8 +31,7 @@
     "maintained node versions"
   ],
   "files": [
-    "/lib",
-    "/src"
+    "/lib"
   ],
   "scripts": {
     "build": "npm run clean; cross-env NODE_ENV=production rollup -c; npx tsc -p tsconfig.d.json -d",
